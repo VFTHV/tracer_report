@@ -13,14 +13,12 @@ const DisplayTable: React.FC<DisplayTableProps> = ({ data }) => {
     setPassDataState(data);
   }, [data]);
 
-  const [depthStart, setDepthStart] = useState(passDataState.depthStart || 0);
-  const [timeStart, setTimeStart] = useState(passDataState.timeStart || '');
-  const [depthFinish, setDepthFinish] = useState(
-    passDataState.depthFinish || 0
-  );
-  const [timeFinish, setTimeFinish] = useState(passDataState.timeFinish || '');
-  const [logSpeed, setLogSpeed] = useState(passDataState.logSpeed || 0);
-  const [maxPeak, setMaxPeak] = useState(passDataState.maxPeak || 0);
+  const [depthStart, setDepthStart] = useState(passDataState.depthStart);
+  const [timeStart, setTimeStart] = useState(passDataState.timeStart);
+  const [depthFinish, setDepthFinish] = useState(passDataState.depthFinish);
+  const [timeFinish, setTimeFinish] = useState(passDataState.timeFinish);
+  const [logSpeed, setLogSpeed] = useState(passDataState.logSpeed);
+  const [maxPeak, setMaxPeak] = useState(passDataState.maxPeak);
 
   const handleDepthStartChange = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -71,8 +69,8 @@ const DisplayTable: React.FC<DisplayTableProps> = ({ data }) => {
         onChange={handleDepthFinishChange}
       />
       <input type="text" value={timeFinish} onChange={handleTimeFinishChange} />
-      <input type="number" value={logSpeed} onChange={handleLogSpeedChange} />
-      <input type="number" value={maxPeak} onChange={handleMaxPeakChange} />
+      <input type="text" value={logSpeed} onChange={handleLogSpeedChange} />
+      <input type="text" value={maxPeak} onChange={handleMaxPeakChange} />
       <br />
     </>
   );

@@ -12,7 +12,7 @@ interface DisplayDataProps {
 const DisplayData: React.FC<DisplayDataProps> = ({ passData, header }) => {
   return (
     <div>
-      {<DisplayHeader header={header} />}
+      {Object.keys(header).length ? <DisplayHeader header={header} /> : null}
       {passData.map((pass: PassInfo) => (
         <DisplayTable key={Math.random()} data={pass} />
       ))}
