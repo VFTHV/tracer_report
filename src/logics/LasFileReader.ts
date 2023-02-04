@@ -33,12 +33,13 @@ export class LasFileReader {
             });
 
           // sort the fullData by TOD:
+
           this.data = DataProcessor.sortByTOD(this.data);
           this.passData = DataProcessor.extractPassData(
             this.data,
             this.totalDepth
           );
-          console.log(1);
+
           this.header = HeaderProcessor.headerInfo(this.data);
           resolve();
         } else {

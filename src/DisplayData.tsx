@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
+import DisplayHeader from './DisplayHeader';
+import DisplayTable from './DisplayTable';
 import { PassInfo } from './logics/DataProcessor';
 import { HeaderInfo } from './logics/HeaderProcessor';
 
@@ -8,56 +10,11 @@ interface DisplayDataProps {
 }
 
 const DisplayData: React.FC<DisplayDataProps> = ({ passData, header }) => {
-  const renderHeader = () => {
-    return (
-      <>
-        <label>
-          Date:
-          <input type="text" value={header.date} />
-        </label>
-        <label>
-          Company:
-          <input type="text" value={header.company} />
-        </label>
-        <label>
-          Well Name:
-          <input type="text" value={header.wellName} />
-        </label>
-        <label>
-          Plant Location:
-          <input type="text" value={header.fieldName} />
-        </label>
-        <label>
-          Equipment Location:
-          <input type="text" value={header.location} />
-        </label>
-        <label>
-          County:
-          <input type="text" value={header.countyName} />
-        </label>
-        <label>
-          State:
-          <input type="text" value={header.state} />
-        </label>
-      </>
-    );
-  };
-
   return (
     <div>
-      {renderHeader()}
-      {passData.map((pass) => (
-        <div key={Math.random()}>
-          <label>
-            Pass {pass.runNo} Data:
-            <input type="text" value={pass.depthStart} />
-          </label>
-          <input type="text" value={pass.timeStart} />
-          <input type="text" value={pass.depthStart} />
-          <input type="text" value={pass.timeFinish} />
-          <input type="text" value={pass.depthFinish} />
-          <br />
-        </div>
+      {<DisplayHeader header={header} />}
+      {passData.map((pass: PassInfo) => (
+        <DisplayTable key={Math.random()} data={pass} />
       ))}
     </div>
   );

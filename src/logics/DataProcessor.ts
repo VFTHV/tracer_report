@@ -63,7 +63,6 @@ export class DataProcessor {
       const crvHeadIndex: number = log.findIndex((arr: string[]) =>
         arr.includes('~A')
       );
-      const crvHead: string[] = log[crvHeadIndex];
 
       let depthStart: number = nullValue;
       let depthFinish: number = nullValue;

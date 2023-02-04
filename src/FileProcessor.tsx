@@ -25,7 +25,6 @@ function FileProcessor(props: {
     } else {
       const reader = new LasFileReader(inputFile, fileName, totalDepth);
       reader.read().then(() => {
-        console.log(2);
         props.setPassData(reader.passData);
         props.setHeader(reader.header);
       });
