@@ -1,7 +1,13 @@
 import React, { useState } from 'react';
 import { LasFileReader } from './logics/LasFileReader';
 
-function FileProcessor() {
+import { PassInfo } from './logics/DataProcessor';
+import { HeaderInfo } from './logics/HeaderProcessor';
+
+function FileProcessor(props: {
+  setPassData: React.Dispatch<React.SetStateAction<PassInfo[]>>;
+  setHeader: React.Dispatch<React.SetStateAction<HeaderInfo>>;
+}) {
   const [inputFile, setInputFile] = useState<File | null>(null);
   const [fileName, setFileName] = useState('');
   const [totalDepth, setTotalDepth] = useState(0);
@@ -18,7 +24,11 @@ function FileProcessor() {
       alert('Please select a file');
     } else {
       const reader = new LasFileReader(inputFile, fileName, totalDepth);
-      reader.read();
+      reader.read().then(() => {
+        console.log(2);
+        props.setPassData(reader.passData);
+        props.setHeader(reader.header);
+      });
     }
   };
 

@@ -2,8 +2,8 @@ export interface PassInfo {
   runNo: number;
   depthStart: number;
   depthFinish: number;
-  timeStart: string | null;
-  timeFinish: string | null;
+  timeStart: string;
+  timeFinish: string;
   logSpeed: number | string;
   maxPeak: number | string;
 }
@@ -67,8 +67,8 @@ export class DataProcessor {
 
       let depthStart: number = nullValue;
       let depthFinish: number = nullValue;
-      let timeStart: string | null = null;
-      let timeFinish: string | null = null;
+      let timeStart: string = '';
+      let timeFinish: string = '';
       let logSpeed: number | string = 'TD';
       let maxPeak: number | string = '';
 

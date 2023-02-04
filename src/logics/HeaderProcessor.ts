@@ -1,18 +1,70 @@
-export class HeaderProcessor {
-  static convertLasHeader(lasHeader: string, data: number[][]): string {
-    let editHeader = lasHeader
-      .replace(/TIME\.SEC/g, 'DEPT.FT')
-      .replace(/SEC/g, 'FT')
-      .replace('Elapsed Time', 'Depth')
-      .replace(
-        /STRT\.FT\s+(-\d+(\.\d+)?):/,
-        `STRT.FT           ${data[0][0].toString()}:`
-      )
-      .replace(
-        /STOP\.FT\s+(\d+(\.\d+)?):/,
-        `STOP.FT           ${data[data.length - 1][0].toString()}:`
-      );
+export interface HeaderInfo {
+  date: string;
+  company: string;
+  wellName: string;
+  fieldName: string;
+  countyName?: string;
+  state: string;
+  location?: string;
+}
 
-    return editHeader;
+export class HeaderProcessor {
+  static convertHeader(data: string[][][]): string[] {
+    const onePass = data[0];
+    const lastLineIndex = onePass.findIndex(
+      (line: string[]) => line[0] === '~A'
+    );
+    const headerArrays: string[][] = onePass.slice(0, lastLineIndex);
+    const headerStrings = headerArrays.map((row: string[]): string => {
+      return row.join(' ');
+    });
+
+    return headerStrings;
+  }
+
+  static getDetail = (header: string[], detailName: string): string => {
+    let detail: string = '';
+    header.forEach((item: string): void => {
+      if (item.startsWith(detailName)) {
+        detail = item.split(':')[0].split('.')[1].trim();
+      }
+    });
+    return detail;
+  };
+
+  static headerInfo(data: string[][][]): HeaderInfo {
+    const header = HeaderProcessor.convertHeader(data);
+
+    // const headerInfo: HeaderInfo = {}
+    const company: string = HeaderProcessor.getDetail(header, 'COMP');
+    const wellName: string = HeaderProcessor.getDetail(header, 'WELL');
+    const fieldName: string = HeaderProcessor.getDetail(header, 'FLD');
+    const countyName: string = HeaderProcessor.getDetail(header, 'CNTY')
+      ? HeaderProcessor.getDetail(header, 'CNTY')
+      : '';
+    const state: string = HeaderProcessor.getDetail(header, 'STAT');
+    const location: string = HeaderProcessor.getDetail(header, 'LOC')
+      ? HeaderProcessor.getDetail(header, 'LOC')
+      : '';
+
+    const [, month, day, , year] = HeaderProcessor.getDetail(header, 'DATE')
+      .trim()
+      .split(' ');
+
+    let date: string = ``;
+    if (month && day && year) {
+      date = `${day}-${month}-${year}`;
+    }
+
+    const headerInfo = {
+      date,
+      company,
+      wellName,
+      fieldName,
+      countyName,
+      state,
+      location,
+    };
+    return headerInfo;
   }
 }
