@@ -3,11 +3,11 @@ import { PassInfo } from './logics/DataProcessor';
 
 interface DisplayTableProps {
   data: PassInfo;
+  onDataUpdate: (updatedData: PassInfo) => void;
 }
 
-const DisplayTable: React.FC<DisplayTableProps> = ({ data }) => {
+const DisplayTable: React.FC<DisplayTableProps> = ({ data, onDataUpdate }) => {
   const [passDataState, setPassDataState] = useState(data);
-  console.log(data);
 
   useEffect(() => {
     setPassDataState(data);
@@ -24,32 +24,80 @@ const DisplayTable: React.FC<DisplayTableProps> = ({ data }) => {
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     setDepthStart(parseFloat(event.target.value));
+    setPassDataState({
+      ...passDataState,
+      depthStart: parseFloat(event.target.value),
+    });
+    onDataUpdate({
+      ...passDataState,
+      depthStart: parseFloat(event.target.value),
+    });
   };
 
   const handleTimeStartChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     setTimeStart(event.target.value);
+    setPassDataState({
+      ...passDataState,
+      timeStart: event.target.value,
+    });
+    onDataUpdate({
+      ...passDataState,
+      timeStart: event.target.value,
+    });
   };
 
   const handleDepthFinishChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     setDepthFinish(parseFloat(event.target.value));
+    setPassDataState({
+      ...passDataState,
+      depthFinish: parseFloat(event.target.value),
+    });
+    onDataUpdate({
+      ...passDataState,
+      depthFinish: parseFloat(event.target.value),
+    });
   };
 
   const handleTimeFinishChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     setTimeFinish(event.target.value);
+    setPassDataState({
+      ...passDataState,
+      timeFinish: event.target.value,
+    });
+    onDataUpdate({
+      ...passDataState,
+      timeFinish: event.target.value,
+    });
   };
 
   const handleLogSpeedChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setLogSpeed(event.target.value);
+    setPassDataState({
+      ...passDataState,
+      logSpeed: event.target.value,
+    });
+    onDataUpdate({
+      ...passDataState,
+      logSpeed: event.target.value,
+    });
   };
 
   const handleMaxPeakChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setMaxPeak(event.target.value);
+    setPassDataState({
+      ...passDataState,
+      maxPeak: event.target.value,
+    });
+    onDataUpdate({
+      ...passDataState,
+      maxPeak: event.target.value,
+    });
   };
 
   return (
