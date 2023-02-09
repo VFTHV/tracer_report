@@ -1,4 +1,3 @@
-import { report } from 'process';
 import React from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
@@ -16,30 +15,38 @@ interface DisplayDataProps {
 const DisplayData: React.FC<DisplayDataProps> = ({ passData, header }) => {
   const hasHeader = Object.keys(header).length;
   const hasData = passData.length;
+  const enabled = Boolean(hasData) && Boolean(hasHeader);
 
   const [reportData, setReportData] = useState(passData);
+  const [headerData, setHeaderData] = useState(header);
 
   useEffect(() => {
     setReportData(passData);
   }, [passData]);
+  useEffect(() => {
+    setHeaderData(header);
+  }, [header]);
 
   const updatePassData = (updatedData: PassInfo, index: number) => {
     const newData = passData;
     newData[index] = updatedData;
-    console.clear();
-    console.log(reportData[0]);
-    console.log(reportData[1]);
+
     setReportData(newData);
   };
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    ReportGenerator.report(reportData);
+    ReportGenerator.report(reportData, headerData);
   };
 
   return (
     <form onSubmit={(e) => onSubmit(e)}>
-      {hasHeader ? <DisplayHeader header={header} /> : null}
+      {hasHeader ? (
+        <DisplayHeader
+          onHeaderUpdate={(headerInfo: HeaderInfo) => setHeaderData(headerInfo)}
+          header={header}
+        />
+      ) : null}
       <br />
       {passData.map((pass: PassInfo, index) => (
         <DisplayTable
@@ -50,7 +57,10 @@ const DisplayData: React.FC<DisplayDataProps> = ({ passData, header }) => {
           }
         />
       ))}
-      {hasData && hasHeader ? <button type="submit">Submit</button> : ''}
+
+      <button type="submit" disabled={!enabled}>
+        Export to xlsx
+      </button>
     </form>
   );
 };

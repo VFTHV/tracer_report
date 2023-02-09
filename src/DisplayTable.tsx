@@ -23,14 +23,14 @@ const DisplayTable: React.FC<DisplayTableProps> = ({ data, onDataUpdate }) => {
   const handleDepthStartChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    setDepthStart(parseFloat(event.target.value));
+    setDepthStart(Number(event.target.value));
     setPassDataState({
       ...passDataState,
-      depthStart: parseFloat(event.target.value),
+      depthStart: Number(event.target.value),
     });
     onDataUpdate({
       ...passDataState,
-      depthStart: parseFloat(event.target.value),
+      depthStart: Number(event.target.value),
     });
   };
 
@@ -51,14 +51,14 @@ const DisplayTable: React.FC<DisplayTableProps> = ({ data, onDataUpdate }) => {
   const handleDepthFinishChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    setDepthFinish(parseFloat(event.target.value));
+    setDepthFinish(Number(event.target.value));
     setPassDataState({
       ...passDataState,
-      depthFinish: parseFloat(event.target.value),
+      depthFinish: Number(event.target.value),
     });
     onDataUpdate({
       ...passDataState,
-      depthFinish: parseFloat(event.target.value),
+      depthFinish: Number(event.target.value),
     });
   };
 
@@ -106,19 +106,27 @@ const DisplayTable: React.FC<DisplayTableProps> = ({ data, onDataUpdate }) => {
         Pass {data.runNo} Data:
         <input
           type="number"
-          value={depthStart}
+          value={depthStart ? depthStart : 0}
           onChange={handleDepthStartChange}
         />
       </label>
       <input type="text" value={timeStart} onChange={handleTimeStartChange} />
       <input
         type="number"
-        value={depthFinish}
+        value={depthFinish ? depthFinish : 0}
         onChange={handleDepthFinishChange}
       />
       <input type="text" value={timeFinish} onChange={handleTimeFinishChange} />
-      <input type="text" value={logSpeed} onChange={handleLogSpeedChange} />
-      <input type="text" value={maxPeak} onChange={handleMaxPeakChange} />
+      <input
+        type="text"
+        value={logSpeed ? logSpeed : 0}
+        onChange={handleLogSpeedChange}
+      />
+      <input
+        type="text"
+        value={maxPeak ? maxPeak : 0}
+        onChange={handleMaxPeakChange}
+      />
       <br />
     </>
   );

@@ -4,9 +4,13 @@ import { HeaderInfo } from './logics/HeaderProcessor';
 
 interface DisplayHeaderProps {
   header: HeaderInfo;
+  onHeaderUpdate: (updatedHeader: HeaderInfo) => void;
 }
 
-const DisplayHeader: React.FC<DisplayHeaderProps> = ({ header }) => {
+const DisplayHeader: React.FC<DisplayHeaderProps> = ({
+  header,
+  onHeaderUpdate,
+}) => {
   const [headerData, setHeaderData] = useState(header);
 
   useEffect(() => {
@@ -15,6 +19,7 @@ const DisplayHeader: React.FC<DisplayHeaderProps> = ({ header }) => {
 
   const handleHeaderChange = (field: keyof HeaderInfo, value: string) => {
     setHeaderData({ ...headerData, [field]: value });
+    onHeaderUpdate({ ...headerData, [field]: value });
   };
 
   const renderHeader = () => {

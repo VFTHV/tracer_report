@@ -35,7 +35,7 @@ function FileProcessor(props: {
     <form onSubmit={handleSubmit}>
       <label>
         Input File:
-        <input type="file" onChange={handleFileChange} />
+        <input type="file" onChange={handleFileChange} accept=".las" />
       </label>
       <br />
       <label>
