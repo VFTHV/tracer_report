@@ -18,7 +18,7 @@ const DisplayTable: React.FC<DisplayTableProps> = ({ data, onDataUpdate }) => {
   const [depthFinish, setDepthFinish] = useState(passDataState.depthFinish);
   const [timeFinish, setTimeFinish] = useState(passDataState.timeFinish);
   const [logSpeed, setLogSpeed] = useState(passDataState.logSpeed);
-  const [maxPeak, setMaxPeak] = useState(passDataState.maxPeak);
+  const [maxPeak, setMaxPeak] = useState(passDataState.maxPeakDepth);
 
   const handleDepthStartChange = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -92,11 +92,11 @@ const DisplayTable: React.FC<DisplayTableProps> = ({ data, onDataUpdate }) => {
     setMaxPeak(event.target.value);
     setPassDataState({
       ...passDataState,
-      maxPeak: event.target.value,
+      maxPeakDepth: event.target.value,
     });
     onDataUpdate({
       ...passDataState,
-      maxPeak: event.target.value,
+      maxPeakDepth: event.target.value,
     });
   };
 

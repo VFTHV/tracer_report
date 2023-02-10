@@ -5,7 +5,8 @@ export interface PassInfo {
   timeStart: string;
   timeFinish: string;
   logSpeed: number | string;
-  maxPeak: number | string;
+  maxPeakValue: string | number;
+  maxPeakDepth: number | string;
 }
 
 export class DataProcessor {
@@ -69,7 +70,8 @@ export class DataProcessor {
       let timeStart: string = '';
       let timeFinish: string = '';
       let logSpeed: number | string = 'TD';
-      let maxPeak: number | string = '';
+      let maxPeakDepth: number | string = '';
+      let maxPeakValue: number | string = '';
 
       if (isDepthDriven) {
         // assigning depthStart and depthStop from LAS header
@@ -104,7 +106,9 @@ export class DataProcessor {
           },
           0
         );
-        maxPeak = Math.round(parseFloat(depthCurve[det2MaxValueIndex]));
+
+        maxPeakDepth = Math.round(parseFloat(depthCurve[det2MaxValueIndex]));
+        maxPeakValue = Math.round(det2Curve[det2MaxValueIndex]);
       } else {
         // assigning depthStart and depthStop from ADPTH
         const adpthCurve = DataProcessor.getCurve(log, 'ADPTH', nullValue);
@@ -147,7 +151,8 @@ export class DataProcessor {
         timeStart,
         timeFinish,
         logSpeed,
-        maxPeak,
+        maxPeakDepth,
+        maxPeakValue,
         runNo,
       };
       return passInfo;

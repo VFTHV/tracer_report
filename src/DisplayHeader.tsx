@@ -45,16 +45,16 @@ const DisplayHeader: React.FC<DisplayHeaderProps> = ({
           Well Name:
           <input
             type="text"
-            value={headerData.wellName}
-            onChange={(e) => handleHeaderChange('wellName', e.target.value)}
+            value={headerData.well}
+            onChange={(e) => handleHeaderChange('well', e.target.value)}
           />
         </label>
         <label>
           Plant Location:
           <input
             type="text"
-            value={headerData.fieldName}
-            onChange={(e) => handleHeaderChange('fieldName', e.target.value)}
+            value={headerData.field}
+            onChange={(e) => handleHeaderChange('field', e.target.value)}
           />
         </label>
         <label>
@@ -69,8 +69,8 @@ const DisplayHeader: React.FC<DisplayHeaderProps> = ({
           County:
           <input
             type="text"
-            value={headerData.countyName}
-            onChange={(e) => handleHeaderChange('countyName', e.target.value)}
+            value={headerData.county}
+            onChange={(e) => handleHeaderChange('county', e.target.value)}
           />
         </label>
         <label>

@@ -1,9 +1,9 @@
 export interface HeaderInfo {
   date: string;
   company: string;
-  wellName: string;
-  fieldName: string;
-  countyName?: string;
+  well: string;
+  field: string;
+  county?: string;
   state: string;
   location?: string;
 }
@@ -37,9 +37,9 @@ export class HeaderProcessor {
 
     // const headerInfo: HeaderInfo = {}
     const company: string = HeaderProcessor.getDetail(header, 'COMP');
-    const wellName: string = HeaderProcessor.getDetail(header, 'WELL');
-    const fieldName: string = HeaderProcessor.getDetail(header, 'FLD');
-    const countyName: string = HeaderProcessor.getDetail(header, 'CNTY')
+    const well: string = HeaderProcessor.getDetail(header, 'WELL');
+    const field: string = HeaderProcessor.getDetail(header, 'FLD');
+    const county: string = HeaderProcessor.getDetail(header, 'CNTY')
       ? HeaderProcessor.getDetail(header, 'CNTY')
       : '';
     const state: string = HeaderProcessor.getDetail(header, 'STAT');
@@ -59,9 +59,9 @@ export class HeaderProcessor {
     const headerInfo = {
       date,
       company,
-      wellName,
-      fieldName,
-      countyName,
+      well,
+      field,
+      county,
       state,
       location,
     };
