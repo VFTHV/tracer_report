@@ -8,11 +8,7 @@ export class LasFileReader {
   passData: Array<PassInfo>;
   header: HeaderInfo;
 
-  constructor(
-    public file: File,
-    public fileName: string,
-    public totalDepth: number
-  ) {}
+  constructor(public file: File, public totalDepth: number) {}
 
   async read(): Promise<void> {
     return new Promise((resolve, reject) => {

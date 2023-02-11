@@ -11,18 +11,23 @@ import TableHead from './TableHead';
 interface DisplayDataProps {
   passData: Array<PassInfo>;
   header: HeaderInfo;
+  fileName: string;
 }
 
-const DisplayData: React.FC<DisplayDataProps> = ({ passData, header }) => {
+const DisplayData: React.FC<DisplayDataProps> = ({
+  passData,
+  header,
+  fileName,
+}) => {
   const hasHeader = Object.keys(header).length;
   const hasData = passData.length;
   const enabled = Boolean(hasData) && Boolean(hasHeader);
 
-  const [reportData, setReportData] = useState(passData);
+  const [tableData, setTableData] = useState(passData);
   const [headerData, setHeaderData] = useState(header);
 
   useEffect(() => {
-    setReportData(passData);
+    setTableData(passData);
   }, [passData]);
   useEffect(() => {
     setHeaderData(header);
@@ -32,12 +37,12 @@ const DisplayData: React.FC<DisplayDataProps> = ({ passData, header }) => {
     const newData = passData;
     newData[index] = updatedData;
 
-    setReportData(newData);
+    setTableData(newData);
   };
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    ReportGenerator.report(reportData, headerData);
+    ReportGenerator.report(tableData, headerData, fileName);
   };
 
   return (

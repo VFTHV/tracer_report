@@ -8,11 +8,17 @@ import { HeaderInfo } from './logics/HeaderProcessor';
 export default function App() {
   const [passData, setPassData] = useState<PassInfo[]>([]);
   const [header, setHeader] = useState<HeaderInfo>({} as HeaderInfo);
+  const [fileName, setFileName] = useState('');
+  console.log(fileName);
 
   return (
     <div className="container-fluid">
-      <FileProcessor setPassData={setPassData} setHeader={setHeader} />
-      <DisplayData passData={passData} header={header} />
+      <FileProcessor
+        setPassData={setPassData}
+        setHeader={setHeader}
+        setFileName={setFileName}
+      />
+      <DisplayData passData={passData} header={header} fileName={fileName} />
     </div>
   );
 }

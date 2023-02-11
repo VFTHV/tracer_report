@@ -7,6 +7,7 @@ import { HeaderInfo } from './logics/HeaderProcessor';
 function FileProcessor(props: {
   setPassData: React.Dispatch<React.SetStateAction<PassInfo[]>>;
   setHeader: React.Dispatch<React.SetStateAction<HeaderInfo>>;
+  setFileName: React.Dispatch<React.SetStateAction<string>>;
 }) {
   const [inputFile, setInputFile] = useState<File | null>(null);
   const [fileName, setFileName] = useState('');
@@ -23,10 +24,11 @@ function FileProcessor(props: {
     if (!inputFile) {
       alert('Please select a file');
     } else {
-      const reader = new LasFileReader(inputFile, fileName, totalDepth);
+      const reader = new LasFileReader(inputFile, totalDepth);
       reader.read().then(() => {
         props.setPassData(reader.passData);
         props.setHeader(reader.header);
+        props.setFileName(fileName);
       });
     }
   };

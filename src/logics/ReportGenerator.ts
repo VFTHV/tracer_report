@@ -9,18 +9,23 @@ interface RemarksInfo {
 }
 
 export class ReportGenerator {
-  static report(passData: PassInfo[], headerData: HeaderInfo): void {
+  static report(
+    passData: PassInfo[],
+    headerData: HeaderInfo,
+    filename: string
+  ): void {
     const workbook = new ExcelJS.Workbook();
     const worksheet = workbook.addWorksheet('Sheet 1');
 
     ReportGenerator.createHeader(worksheet, headerData);
     ReportGenerator.createTable(worksheet, passData);
-    ReportGenerator.toXlsx(worksheet, workbook);
+    ReportGenerator.toXlsx(worksheet, workbook, filename);
   }
 
   static toXlsx(
     worksheet: ExcelJS.Worksheet,
-    workbook: ExcelJS.Workbook
+    workbook: ExcelJS.Workbook,
+    fileName: string
   ): void {
     const rowCnt = worksheet.rowCount;
     worksheet.getRow(rowCnt + 10).addPageBreak();
@@ -36,7 +41,7 @@ export class ReportGenerator {
       // Create link element for downloading the blob object
       const link = document.createElement('a');
       link.href = window.URL.createObjectURL(blob);
-      link.download = 'filename.xlsx';
+      link.download = `${fileName}.xlsx`;
       link.click();
     });
   }
