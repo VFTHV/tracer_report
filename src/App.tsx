@@ -5,16 +5,14 @@ import DisplayData from './DisplayData';
 import { PassInfo } from './logics/DataProcessor';
 import { HeaderInfo } from './logics/HeaderProcessor';
 
-const App = () => {
+export default function App() {
   const [passData, setPassData] = useState<PassInfo[]>([]);
   const [header, setHeader] = useState<HeaderInfo>({} as HeaderInfo);
 
   return (
-    <div>
+    <div className="container-fluid">
       <FileProcessor setPassData={setPassData} setHeader={setHeader} />
       <DisplayData passData={passData} header={header} />
     </div>
   );
-};
-
-export default App;
+}

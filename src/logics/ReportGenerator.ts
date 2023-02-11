@@ -46,11 +46,11 @@ export class ReportGenerator {
     const tblHead1 = worksheet.addRow([
       'RUN No.',
       'START',
-      ,
+      '',
       'STOP',
-      ,
+      '',
       'INJECTION',
-      ,
+      '',
       'LOGGING SPEED',
       'SLUG PEAK',
       'REMARKS',
@@ -75,7 +75,7 @@ export class ReportGenerator {
     worksheet.mergeCells(`F${worksheet.rowCount}:G${worksheet.rowCount}`);
 
     worksheet.addRow(
-      [, , 'DEPTH', 'TIME', 'DEPTH', 'TIME', 'RATE', 'PSIG'],
+      ['', 'DEPTH', 'TIME', 'DEPTH', 'TIME', 'RATE', 'PSIG'],
       'i'
     );
     worksheet.mergeCells(`A${worksheet.rowCount}:A${worksheet.rowCount - 1}`);
@@ -134,7 +134,7 @@ export class ReportGenerator {
     worksheet: ExcelJS.Worksheet,
     headerData: HeaderInfo
   ): void {
-    const columnWidths = [4, 7, 7, 7, 7, 9.89, 9.89, 9.89, 9.89, 27.5];
+    const columnWidths = [5, 7, 7, 7, 7, 9.89, 9.89, 9.89, 9.89, 27.5];
 
     columnWidths.forEach((colWidth, i) => {
       worksheet.getColumn(i + 1).width = colWidth;
@@ -157,19 +157,17 @@ export class ReportGenerator {
 
     headerKeys.forEach((key) => {
       const newRow = worksheet.addRow([
-        ,
-        ,
+        '',
         `${key.toUpperCase()}:`,
-        ,
-        ,
-        ,
+        '',
+        '',
         (headerData as any)[key],
       ]);
       newRow.eachCell((cell) => (cell.font = { bold: true }));
     });
 
-    worksheet.addRow([, , 'LOGGING ENGINEER:'], 'i');
-    worksheet.addRow([, , 'WELL CONNECTION:'], 'i');
+    worksheet.addRow(['', 'LOGGING ENGINEER:'], 'i');
+    worksheet.addRow(['', 'WELL CONNECTION:'], 'i');
 
     worksheet.addRow([]);
   }
@@ -179,7 +177,7 @@ export class ReportGenerator {
     // 1st and last items are pre-base and post-base
     // if item is TD and lasts less than 10 minutes -> stat check
     // if item is TD and lasts more than 15 minutes -> time drive
-    // it item is not first, not last, has peak -->  Pass 1
+    // if item is not first, not last, has peak -->  Pass 1
     // if slug peak slug value decreases --> increase Pass number +1
     // if slug peak value increases --> add yellow slug line --> Pass1
     let remarks: RemarksInfo[] = [];

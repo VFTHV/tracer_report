@@ -101,34 +101,59 @@ const DisplayTable: React.FC<DisplayTableProps> = ({ data, onDataUpdate }) => {
   };
 
   return (
-    <>
-      <label>
-        Pass {data.runNo} Data:
+    <tr>
+      <td className="text-nowrap">
+        <label>Pass {data.runNo}:</label>
+      </td>
+      <td>
         <input
           type="number"
+          className="col p-0 border-0 text-center"
           value={depthStart ? depthStart : 0}
           onChange={handleDepthStartChange}
         />
-      </label>
-      <input type="text" value={timeStart} onChange={handleTimeStartChange} />
-      <input
-        type="number"
-        value={depthFinish ? depthFinish : 0}
-        onChange={handleDepthFinishChange}
-      />
-      <input type="text" value={timeFinish} onChange={handleTimeFinishChange} />
-      <input
-        type="text"
-        value={logSpeed ? logSpeed : 0}
-        onChange={handleLogSpeedChange}
-      />
-      <input
-        type="text"
-        value={maxPeak ? maxPeak : 0}
-        onChange={handleMaxPeakChange}
-      />
-      <br />
-    </>
+      </td>
+      <td>
+        <input
+          type="text"
+          className="col p-0 border-0 text-center"
+          value={timeStart}
+          onChange={handleTimeStartChange}
+        />
+      </td>
+      <td>
+        <input
+          type="number"
+          className="col p-0 border-0 text-center"
+          value={depthFinish ? depthFinish : 0}
+          onChange={handleDepthFinishChange}
+        />
+      </td>
+      <td>
+        <input
+          className="col p-0 border-0 text-center"
+          type="text"
+          value={timeFinish}
+          onChange={handleTimeFinishChange}
+        />
+      </td>
+      <td>
+        <input
+          className="col p-0 border-0 text-center"
+          type="text"
+          value={logSpeed ? logSpeed : 0}
+          onChange={handleLogSpeedChange}
+        />
+      </td>
+      <td>
+        <input
+          className="col p-0 border-0 text-center"
+          type="text"
+          value={maxPeak ? maxPeak : 0}
+          onChange={handleMaxPeakChange}
+        />
+      </td>
+    </tr>
   );
 };
 

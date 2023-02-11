@@ -6,6 +6,7 @@ import DisplayTable from './DisplayTable';
 import { PassInfo } from './logics/DataProcessor';
 import { HeaderInfo } from './logics/HeaderProcessor';
 import { ReportGenerator } from './logics/ReportGenerator';
+import TableHead from './TableHead';
 
 interface DisplayDataProps {
   passData: Array<PassInfo>;
@@ -47,16 +48,24 @@ const DisplayData: React.FC<DisplayDataProps> = ({ passData, header }) => {
           header={header}
         />
       ) : null}
-      <br />
-      {passData.map((pass: PassInfo, index) => (
-        <DisplayTable
-          key={Math.random()}
-          data={pass}
-          onDataUpdate={(updatedData: PassInfo) =>
-            updatePassData(updatedData, index)
-          }
-        />
-      ))}
+
+      <table className="table table-bordered table-sm">
+        <thead>
+          <TableHead />
+        </thead>
+
+        <tbody>
+          {passData.map((pass: PassInfo, index) => (
+            <DisplayTable
+              key={Math.random()}
+              data={pass}
+              onDataUpdate={(updatedData: PassInfo) =>
+                updatePassData(updatedData, index)
+              }
+            />
+          ))}
+        </tbody>
+      </table>
 
       <button type="submit" disabled={!enabled}>
         Export to xlsx
