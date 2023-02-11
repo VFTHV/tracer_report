@@ -24,9 +24,9 @@ const DisplayHeader: React.FC<DisplayHeaderProps> = ({
 
   const renderHeader = () => {
     return (
-      <>
-        <div className="row my-2">
-          <label className="col-2" htmlFor="date">
+      <div className="my-2">
+        <div className="row">
+          <label className="col-2 m-0" htmlFor="date">
             Date:
           </label>
           <input
@@ -37,8 +37,8 @@ const DisplayHeader: React.FC<DisplayHeaderProps> = ({
             onChange={(e) => handleHeaderChange('date', e.target.value)}
           />
         </div>
-        <div className="row my-2">
-          <label className="col-2" htmlFor="company">
+        <div className="row">
+          <label className="col-2 m-0" htmlFor="company">
             Company:
           </label>
           <input
@@ -49,8 +49,8 @@ const DisplayHeader: React.FC<DisplayHeaderProps> = ({
             onChange={(e) => handleHeaderChange('company', e.target.value)}
           />
         </div>
-        <div className="row my-2">
-          <label className="col-2" htmlFor="well-name">
+        <div className="row">
+          <label className="col-2 m-0" htmlFor="well-name">
             Well Name:
           </label>
           <input
@@ -61,8 +61,8 @@ const DisplayHeader: React.FC<DisplayHeaderProps> = ({
             onChange={(e) => handleHeaderChange('well', e.target.value)}
           />
         </div>
-        <div className="row my-2">
-          <label className="col-2" htmlFor="location">
+        <div className="row">
+          <label className="col-2 m-0" htmlFor="location">
             Plant/Field:
           </label>
           <input
@@ -74,43 +74,43 @@ const DisplayHeader: React.FC<DisplayHeaderProps> = ({
           />
         </div>
 
-        <div className="row my-2">
-          <label className="col-2" htmlFor="eq-location">
+        <div className="row">
+          <label className="col-2 m-0" htmlFor="eq-location">
             Location:
           </label>
           <input
             id="eq-location"
-            className="col-2"
+            className="col-2 m-0"
             type="text"
             value={headerData.location}
             onChange={(e) => handleHeaderChange('location', e.target.value)}
           />
         </div>
-        <div className="row my-2">
-          <label className="col-2" htmlFor="county">
+        <div className="row">
+          <label className="col-2 m-0" htmlFor="county">
             County:
           </label>
           <input
             id="county"
-            className="col-2"
+            className="col-2 m-0"
             type="text"
             value={headerData.county}
             onChange={(e) => handleHeaderChange('county', e.target.value)}
           />
         </div>
-        <div className="row my-2">
-          <label className="col-2" htmlFor="state">
+        <div className="row">
+          <label className="col-2 m-0" htmlFor="state">
             State:
           </label>
           <input
             id="state"
-            className="col-2"
+            className="col-2 m-0"
             type="text"
             value={headerData.state}
             onChange={(e) => handleHeaderChange('state', e.target.value)}
           />
         </div>
-      </>
+      </div>
     );
   };
   return <>{renderHeader()}</>;

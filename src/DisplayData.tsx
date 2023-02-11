@@ -49,10 +49,8 @@ const DisplayData: React.FC<DisplayDataProps> = ({ passData, header }) => {
         />
       ) : null}
 
-      <table className="table table-bordered table-sm">
-        <thead>
-          <TableHead />
-        </thead>
+      <table className="table table-striped table-bordered">
+        <TableHead />
 
         <tbody>
           {passData.map((pass: PassInfo, index) => (

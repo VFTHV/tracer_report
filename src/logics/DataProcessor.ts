@@ -95,20 +95,24 @@ export class DataProcessor {
           lspdCurve.length;
         logSpeed = Math.abs(Math.floor(averageLSPD));
 
-        // assigning maxPeak
-        const depthCurve: string[] = DataProcessor.getCurve(log, 'Depth');
-        const det2Curve: number[] = DataProcessor.getCurve(log, 'DET2').map(
-          (item: string) => parseFloat(item)
-        );
-        const det2MaxValueIndex = det2Curve.reduce(
-          (maxIndex, currentValue, currentIndex) => {
-            return currentValue > det2Curve[maxIndex] ? currentIndex : maxIndex;
-          },
-          0
-        );
+        if (runIndex > 0 && runIndex < data.length - 1) {
+          // assigning maxPeak
+          const depthCurve: string[] = DataProcessor.getCurve(log, 'Depth');
+          const det2Curve: number[] = DataProcessor.getCurve(log, 'DET2').map(
+            (item: string) => parseFloat(item)
+          );
+          const det2MaxValueIndex = det2Curve.reduce(
+            (maxIndex, currentValue, currentIndex) => {
+              return currentValue > det2Curve[maxIndex]
+                ? currentIndex
+                : maxIndex;
+            },
+            0
+          );
 
-        maxPeakDepth = Math.round(parseFloat(depthCurve[det2MaxValueIndex]));
-        maxPeakValue = Math.round(det2Curve[det2MaxValueIndex]);
+          maxPeakDepth = Math.round(parseFloat(depthCurve[det2MaxValueIndex]));
+          maxPeakValue = Math.round(det2Curve[det2MaxValueIndex]);
+        }
       } else {
         // assigning depthStart and depthStop from ADPTH
         const adpthCurve = DataProcessor.getCurve(log, 'ADPTH', nullValue);

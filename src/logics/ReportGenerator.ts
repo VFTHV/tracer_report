@@ -117,7 +117,7 @@ export class ReportGenerator {
           '',
           '',
           rowData.logSpeed,
-          index === 0 || index === arr.length - 1 ? '' : rowData.maxPeakDepth,
+          rowData.maxPeakDepth,
           remarks[index].remark,
         ],
         'i'
