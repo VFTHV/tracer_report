@@ -1,11 +1,11 @@
 import { DataProcessor } from './DataProcessor';
 import { HeaderProcessor } from './HeaderProcessor';
-import { PassInfo } from './DataProcessor';
+import { AllPassData } from './DataProcessor';
 import { HeaderInfo } from './HeaderProcessor';
 
 export class LasFileReader {
   data: string[][][];
-  passData: Array<PassInfo>;
+  passDataAndRemarks: Array<AllPassData>;
   header: HeaderInfo;
 
   constructor(public file: File, public totalDepth: number) {}
@@ -20,7 +20,7 @@ export class LasFileReader {
           this.data = fileReader.result
             .toString()
             .split('~Version Information')
-            .filter((string) => string.trim() != '')
+            .filter((string) => string.trim() !== '')
             .map((ratPass: string): string[][] => {
               const splittedPass = ratPass.split('\n');
               return splittedPass.map((row: string): string[] =>
@@ -30,11 +30,11 @@ export class LasFileReader {
 
           // sort the fullData by TOD:
 
-          this.data = DataProcessor.sortByTOD(this.data);
-          this.passData = DataProcessor.extractPassData(
+          this.passDataAndRemarks = DataProcessor.getAllPassData(
             this.data,
             this.totalDepth
           );
+          console.log(this.passDataAndRemarks);
 
           this.header = HeaderProcessor.headerInfo(this.data);
           resolve();

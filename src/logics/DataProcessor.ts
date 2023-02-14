@@ -1,3 +1,14 @@
+export interface AllPassData {
+  runNo: number;
+  depthStart: number;
+  depthFinish: number;
+  timeStart: string;
+  timeFinish: string;
+  logSpeed: number | string;
+  maxPeakValue: string | number;
+  maxPeakDepth: number | string;
+  remark: RemarkInfo;
+}
 export interface PassInfo {
   runNo: number;
   depthStart: number;
@@ -9,7 +20,26 @@ export interface PassInfo {
   maxPeakDepth: number | string;
 }
 
+export interface RemarkInfo {
+  newSlug: boolean;
+  remark: string;
+  slugNo: number;
+}
+
 export class DataProcessor {
+  static getAllPassData(
+    data: string[][][],
+    totalDepth?: number
+  ): AllPassData[] {
+    const passData = DataProcessor.extractPassData(data, totalDepth);
+    const remarks = DataProcessor.createRemarks(passData);
+
+    const combinedData = passData.map((pass, i): AllPassData => {
+      return { ...pass, ['remark']: remarks[i] };
+    });
+    return combinedData;
+  }
+
   static getCurve(data: string[][], crvName: string, nullVal?: number) {
     const crvHeadIndex: number = data.findIndex((arr: string[]) =>
       arr.includes('~A')
@@ -51,18 +81,12 @@ export class DataProcessor {
     return data;
   }
 
-  static extractPassData(
-    data: string[][][],
-    totalDepth?: number
-  ): Array<PassInfo> {
+  static extractPassData(data: string[][][], totalDepth?: number): PassInfo[] {
     const nullValue = -999.25;
 
     return data.map((log: string[][], runIndex: number): PassInfo => {
       const isDepthDriven: boolean = log.some((subarr: string[]) =>
         subarr.includes('DEPT.FT')
-      );
-      const crvHeadIndex: number = log.findIndex((arr: string[]) =>
-        arr.includes('~A')
       );
 
       let depthStart: number = nullValue;
@@ -161,5 +185,85 @@ export class DataProcessor {
       };
       return passInfo;
     });
+  }
+
+  static createRemarks(passData: PassInfo[]): RemarkInfo[] {
+    // creating remarks
+    // 1st and last items are pre-base and post-base
+    // if item is TD and lasts less than 10 minutes -> stat check
+    // if item is TD and lasts more than 15 minutes -> time drive
+    // if item is not first, not last, has peak -->  Pass 1
+    // if slug peak slug value decreases --> increase Pass number +1
+    // if slug peak value increases --> add yellow slug line --> Pass1
+    let remarks: RemarkInfo[] = [];
+    let newSlug: boolean = false;
+    let slugPassNo = 1;
+    let slugNo = 1;
+    let statCheckNo = 1;
+    let timeDriveNo = 1;
+
+    passData.forEach((rowData, index, arr) => {
+      const timeToHours = (time: string): number => {
+        const hrMinArr = time.split(':');
+        const hrs = parseFloat(hrMinArr[0]);
+        const mins = parseFloat(hrMinArr[1]);
+        const totalMin = hrs * 60 + mins;
+        return totalMin;
+      };
+      const passDuration =
+        timeToHours(rowData.timeFinish) - timeToHours(rowData.timeStart);
+
+      // creating remarks
+
+      if (index === 0) {
+        remarks.push({
+          remark: 'PRE-SURVEY BASE LOG',
+          newSlug,
+          slugNo,
+        });
+      } else if (index === arr.length - 1) {
+        remarks.push({
+          remark: 'POST-SURVEY BASE LOG',
+          newSlug,
+          slugNo,
+        });
+      } else if (typeof rowData.logSpeed !== 'number') {
+        if (passDuration < 15) {
+          remarks.push({
+            remark: `STAT CHECK #${statCheckNo}`,
+            newSlug,
+            slugNo,
+          });
+          statCheckNo++;
+        } else {
+          remarks.push({
+            remark: `TIME DRIVE ${timeDriveNo}`,
+            newSlug,
+            slugNo,
+          });
+          timeDriveNo++;
+        }
+      } else if (index !== 0 && index !== arr.length - 1) {
+        if (slugPassNo === 1) {
+          newSlug = true;
+        }
+        remarks.push({
+          remark: `PASS # ${slugPassNo}`,
+          newSlug,
+          slugNo,
+        });
+        slugPassNo++;
+        newSlug = false;
+
+        if (
+          arr[index + 1].maxPeakValue > 2 * (rowData.maxPeakValue as number) &&
+          arr[index + 1].maxPeakDepth < rowData.maxPeakDepth
+        ) {
+          slugPassNo = 1;
+          slugNo++;
+        }
+      }
+    });
+    return remarks;
   }
 }

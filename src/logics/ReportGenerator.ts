@@ -1,16 +1,10 @@
 import ExcelJS from 'exceljs';
-import { PassInfo } from './DataProcessor';
+import { AllPassData } from './DataProcessor';
 import { HeaderInfo } from './HeaderProcessor';
-
-interface RemarksInfo {
-  newSlug: boolean;
-  remark: string;
-  slugNo: number;
-}
 
 export class ReportGenerator {
   static report(
-    passData: PassInfo[],
+    passData: AllPassData[],
     headerData: HeaderInfo,
     filename: string
   ): void {
@@ -41,12 +35,15 @@ export class ReportGenerator {
       // Create link element for downloading the blob object
       const link = document.createElement('a');
       link.href = window.URL.createObjectURL(blob);
-      link.download = `${fileName}.xlsx`;
+      link.download = `${fileName ? fileName : 'report'}.xlsx`;
       link.click();
     });
   }
 
-  static createTable(worksheet: ExcelJS.Worksheet, passData: PassInfo[]): void {
+  static createTable(
+    worksheet: ExcelJS.Worksheet,
+    passData: AllPassData[]
+  ): void {
     // adding tableHead and data
     const tblHead1 = worksheet.addRow([
       'RUN No.',
@@ -88,11 +85,10 @@ export class ReportGenerator {
     worksheet.mergeCells(`I${worksheet.rowCount}:I${worksheet.rowCount - 1}`);
     worksheet.mergeCells(`J${worksheet.rowCount}:J${worksheet.rowCount - 1}`);
 
-    const remarks: RemarksInfo[] = ReportGenerator.createRemarks(passData);
     const yellowRows: number[] = [];
 
     passData.forEach((rowData, index, arr) => {
-      if (remarks[index].newSlug) {
+      if (rowData.remark.newSlug) {
         worksheet.addRow(
           [
             '',
@@ -104,7 +100,7 @@ export class ReportGenerator {
             '',
             '',
             '',
-            `EJECTED SLUG ${remarks[index].slugNo}`,
+            `EJECTED SLUG ${rowData.remark.slugNo}`,
           ],
           'i'
         );
@@ -123,7 +119,7 @@ export class ReportGenerator {
           '',
           rowData.logSpeed,
           rowData.maxPeakDepth,
-          remarks[index].remark,
+          rowData.remark,
         ],
         'i'
       );
@@ -175,85 +171,5 @@ export class ReportGenerator {
     worksheet.addRow(['', 'WELL CONNECTION:'], 'i');
 
     worksheet.addRow([]);
-  }
-
-  static createRemarks(passData: PassInfo[]): RemarksInfo[] {
-    // creating remarks
-    // 1st and last items are pre-base and post-base
-    // if item is TD and lasts less than 10 minutes -> stat check
-    // if item is TD and lasts more than 15 minutes -> time drive
-    // if item is not first, not last, has peak -->  Pass 1
-    // if slug peak slug value decreases --> increase Pass number +1
-    // if slug peak value increases --> add yellow slug line --> Pass1
-    let remarks: RemarksInfo[] = [];
-    let newSlug: boolean = false;
-    let slugPassNo = 1;
-    let slugNo = 1;
-    let statCheckNo = 1;
-    let timeDriveNo = 1;
-
-    passData.forEach((rowData, index, arr) => {
-      const timeToHours = (time: string): number => {
-        const hrMinArr = time.split(':');
-        const hrs = parseFloat(hrMinArr[0]);
-        const mins = parseFloat(hrMinArr[1]);
-        const totalMin = hrs * 60 + mins;
-        return totalMin;
-      };
-      const passDuration =
-        timeToHours(rowData.timeFinish) - timeToHours(rowData.timeStart);
-
-      // creating remarks
-
-      if (index === 0) {
-        remarks.push({
-          remark: 'PRE-SURVEY BASE LOG',
-          newSlug,
-          slugNo,
-        });
-      } else if (index === arr.length - 1) {
-        remarks.push({
-          remark: 'POST-SURVEY BASE LOG',
-          newSlug,
-          slugNo,
-        });
-      } else if (typeof rowData.logSpeed !== 'number') {
-        if (passDuration < 15) {
-          remarks.push({
-            remark: `STAT CHECK #${statCheckNo}`,
-            newSlug,
-            slugNo,
-          });
-          statCheckNo++;
-        } else {
-          remarks.push({
-            remark: `TIME DRIVE ${timeDriveNo}`,
-            newSlug,
-            slugNo,
-          });
-          timeDriveNo++;
-        }
-      } else if (index !== 0 && index !== arr.length - 1) {
-        if (slugPassNo === 1) {
-          newSlug = true;
-        }
-        remarks.push({
-          remark: `PASS # ${slugPassNo}`,
-          newSlug,
-          slugNo,
-        });
-        slugPassNo++;
-        newSlug = false;
-
-        if (
-          arr[index + 1].maxPeakValue > 2 * (rowData.maxPeakValue as number) &&
-          arr[index + 1].maxPeakDepth < rowData.maxPeakDepth
-        ) {
-          slugPassNo = 1;
-          slugNo++;
-        }
-      }
-    });
-    return remarks;
   }
 }

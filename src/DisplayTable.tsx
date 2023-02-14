@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { PassInfo } from './logics/DataProcessor';
+import { AllPassData } from './logics/DataProcessor';
 
 interface DisplayTableProps {
-  data: PassInfo;
-  onDataUpdate: (updatedData: PassInfo) => void;
+  data: AllPassData;
+  onDataUpdate: (updatedData: AllPassData) => void;
 }
 
 const DisplayTable: React.FC<DisplayTableProps> = ({ data, onDataUpdate }) => {

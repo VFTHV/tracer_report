@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { LasFileReader } from './logics/LasFileReader';
 
-import { PassInfo } from './logics/DataProcessor';
+import { AllPassData } from './logics/DataProcessor';
 import { HeaderInfo } from './logics/HeaderProcessor';
 
 function FileProcessor(props: {
-  setPassData: React.Dispatch<React.SetStateAction<PassInfo[]>>;
+  setPassData: React.Dispatch<React.SetStateAction<AllPassData[]>>;
   setHeader: React.Dispatch<React.SetStateAction<HeaderInfo>>;
   setFileName: React.Dispatch<React.SetStateAction<string>>;
 }) {
@@ -26,7 +26,7 @@ function FileProcessor(props: {
     } else {
       const reader = new LasFileReader(inputFile, totalDepth);
       reader.read().then(() => {
-        props.setPassData(reader.passData);
+        props.setPassData(reader.passDataAndRemarks);
         props.setHeader(reader.header);
         props.setFileName(fileName);
       });

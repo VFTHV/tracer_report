@@ -3,13 +3,13 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import DisplayHeader from './DisplayHeader';
 import DisplayTable from './DisplayTable';
-import { PassInfo } from './logics/DataProcessor';
+import { AllPassData } from './logics/DataProcessor';
 import { HeaderInfo } from './logics/HeaderProcessor';
 import { ReportGenerator } from './logics/ReportGenerator';
 import TableHead from './TableHead';
 
 interface DisplayDataProps {
-  passData: Array<PassInfo>;
+  passData: Array<AllPassData>;
   header: HeaderInfo;
   fileName: string;
 }
@@ -33,7 +33,7 @@ const DisplayData: React.FC<DisplayDataProps> = ({
     setHeaderData(header);
   }, [header]);
 
-  const updatePassData = (updatedData: PassInfo, index: number) => {
+  const updatePassData = (updatedData: AllPassData, index: number) => {
     const newData = passData;
     newData[index] = updatedData;
 
@@ -58,11 +58,11 @@ const DisplayData: React.FC<DisplayDataProps> = ({
         <TableHead />
 
         <tbody>
-          {passData.map((pass: PassInfo, index) => (
+          {passData.map((pass: AllPassData, index) => (
             <DisplayTable
               key={Math.random()}
               data={pass}
-              onDataUpdate={(updatedData: PassInfo) =>
+              onDataUpdate={(updatedData: AllPassData) =>
                 updatePassData(updatedData, index)
               }
             />
