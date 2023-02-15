@@ -9,7 +9,6 @@ export default function App() {
   const [passData, setPassData] = useState<AllPassData[]>([]);
   const [header, setHeader] = useState<HeaderInfo>({} as HeaderInfo);
   const [fileName, setFileName] = useState('');
-  console.log(fileName);
 
   return (
     <div className="container-fluid">

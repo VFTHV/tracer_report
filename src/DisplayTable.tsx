@@ -19,6 +19,7 @@ const DisplayTable: React.FC<DisplayTableProps> = ({ data, onDataUpdate }) => {
   const [timeFinish, setTimeFinish] = useState(passDataState.timeFinish);
   const [logSpeed, setLogSpeed] = useState(passDataState.logSpeed);
   const [maxPeak, setMaxPeak] = useState(passDataState.maxPeakDepth);
+  const [remark, setRemark] = useState(passDataState.remark);
 
   const handleDepthStartChange = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -100,6 +101,19 @@ const DisplayTable: React.FC<DisplayTableProps> = ({ data, onDataUpdate }) => {
     });
   };
 
+  const handleRemarkChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const updatedRemark = { ...remark, ['remark']: event.target.value };
+    setRemark(updatedRemark);
+    setPassDataState({
+      ...passDataState,
+      remark: updatedRemark,
+    });
+    onDataUpdate({
+      ...passDataState,
+      remark: updatedRemark,
+    });
+  };
+
   return (
     <tr>
       <th scope="row" className="text-nowrap py-0">
@@ -151,6 +165,14 @@ const DisplayTable: React.FC<DisplayTableProps> = ({ data, onDataUpdate }) => {
           type="text"
           value={maxPeak}
           onChange={handleMaxPeakChange}
+        />
+      </td>
+      <td className="p-0">
+        <input
+          className="col p-0 border-0 text-center bg-transparent"
+          type="text"
+          value={remark.remark}
+          onChange={handleRemarkChange}
         />
       </td>
     </tr>

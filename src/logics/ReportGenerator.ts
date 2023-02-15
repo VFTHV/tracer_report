@@ -119,7 +119,7 @@ export class ReportGenerator {
           '',
           rowData.logSpeed,
           rowData.maxPeakDepth,
-          rowData.remark,
+          rowData.remark.remark,
         ],
         'i'
       );

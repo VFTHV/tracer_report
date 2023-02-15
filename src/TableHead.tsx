@@ -20,6 +20,9 @@ export default function TableHead() {
         <th rowSpan={2} className="text-center align-middle p-0">
           PEAK DEPTH
         </th>
+        <th rowSpan={2} className="text-center align-middle p-0">
+          REMARKS
+        </th>
       </tr>
       <tr>
         <th className="text-center p-0">DEPTH START</th>

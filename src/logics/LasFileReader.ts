@@ -34,7 +34,6 @@ export class LasFileReader {
             this.data,
             this.totalDepth
           );
-          console.log(this.passDataAndRemarks);
 
           this.header = HeaderProcessor.headerInfo(this.data);
           resolve();

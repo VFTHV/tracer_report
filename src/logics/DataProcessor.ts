@@ -31,7 +31,9 @@ export class DataProcessor {
     data: string[][][],
     totalDepth?: number
   ): AllPassData[] {
-    const passData = DataProcessor.extractPassData(data, totalDepth);
+    const sortedData = DataProcessor.sortByTOD(data);
+    const passData = DataProcessor.extractPassData(sortedData, totalDepth);
+
     const remarks = DataProcessor.createRemarks(passData);
 
     const combinedData = passData.map((pass, i): AllPassData => {
