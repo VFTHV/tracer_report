@@ -170,7 +170,7 @@ export class DataProcessor {
         timeStart = secondsToTime(startSec);
         timeFinish = secondsToTime(finishSec);
       } else {
-        alert('Please make sure all LAS files have TOD curve');
+        alert('On of LAS passes does not have TOD curve');
       }
 
       const runNo = runIndex + 1;

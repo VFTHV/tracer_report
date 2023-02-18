@@ -1,4 +1,5 @@
 import { DataProcessor } from './DataProcessor';
+import { LasParser } from './LasParser';
 import { HeaderProcessor } from './HeaderProcessor';
 import { AllPassData } from './DataProcessor';
 import { HeaderInfo } from './HeaderProcessor';
@@ -17,18 +18,7 @@ export class LasFileReader {
 
       fileReader.onloadend = () => {
         if (fileReader.result !== null) {
-          this.data = fileReader.result
-            .toString()
-            .split('~Version Information')
-            .filter((string) => string.trim() !== '')
-            .map((ratPass: string): string[][] => {
-              const splittedPass = ratPass.split('\n');
-              return splittedPass.map((row: string): string[] =>
-                row.trim().split(/\s+/)
-              );
-            });
-
-          // sort the fullData by TOD:
+          this.data = LasParser.parse(fileReader.result);
 
           this.passDataAndRemarks = DataProcessor.getAllPassData(
             this.data,

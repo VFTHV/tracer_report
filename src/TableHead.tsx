@@ -5,7 +5,7 @@ export default function TableHead() {
     <thead className="thead-dark">
       <tr>
         <th rowSpan={2} className="text-center align-middle p-0">
-          ##
+          Run No.
         </th>
         <th className="text-center p-0" colSpan={2}>
           START
@@ -25,10 +25,10 @@ export default function TableHead() {
         </th>
       </tr>
       <tr>
-        <th className="text-center p-0">DEPTH START</th>
-        <th className="text-center p-0">TIME START</th>
-        <th className="text-center p-0">DEPTH FINISH</th>
-        <th className="text-center p-0">TIME FINISH</th>
+        <th className="text-center p-0">DEPTH</th>
+        <th className="text-center p-0">TIME</th>
+        <th className="text-center p-0">DEPTH</th>
+        <th className="text-center p-0">TIME</th>
       </tr>
     </thead>
   );

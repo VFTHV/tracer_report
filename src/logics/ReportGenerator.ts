@@ -87,7 +87,7 @@ export class ReportGenerator {
 
     const yellowRows: number[] = [];
 
-    passData.forEach((rowData, index, arr) => {
+    passData.forEach((rowData, index) => {
       if (rowData.remark.newSlug) {
         worksheet.addRow(
           [

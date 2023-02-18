@@ -55,7 +55,7 @@ const DisplayData: React.FC<DisplayDataProps> = ({
       ) : null}
 
       <table className="table table-striped table-bordered">
-        {passData.length ? <TableHead /> : ''}
+        {hasData ? <TableHead /> : ''}
 
         <tbody>
           {passData.map((pass: AllPassData, index) => (

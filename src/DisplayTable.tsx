@@ -117,11 +117,12 @@ const DisplayTable: React.FC<DisplayTableProps> = ({ data, onDataUpdate }) => {
   return (
     <tr>
       <th scope="row" className="text-nowrap py-0">
-        Pass {data.runNo}:
+        {data.runNo}
       </th>
       <td className="p-0">
         <input
           type="number"
+          style={{ width: '100%' }}
           className="col p-0 border-0 text-center bg-transparent"
           value={depthStart ? depthStart : 0}
           onChange={handleDepthStartChange}
