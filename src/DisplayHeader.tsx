@@ -24,7 +24,7 @@ const DisplayHeader: React.FC<DisplayHeaderProps> = ({
 
   const renderHeader = () => {
     return (
-      <table className="table table-striped table-bordered">
+      <table className="table table-striped table-bordered w-25">
         <tbody>
           <tr>
             <th scope="row" className="text-nowrap py-0">
