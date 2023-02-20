@@ -33,33 +33,56 @@ function FileProcessor(props: {
     }
   };
 
+  const hasFile = Boolean(inputFile);
+
   return (
-    <form onSubmit={handleSubmit}>
-      <label>
-        Input File:
-        <input type="file" onChange={handleFileChange} accept=".las" />
-      </label>
-      <br />
-      <label>
-        Output File Name (not mandatory):
-        <input
-          type="text"
-          value={fileName}
-          onChange={(e) => setFileName(e.target.value)}
-        />
-      </label>
-      <br />
-      <label>
-        Total Depth (not mandatory):
-        <input
-          type="number"
-          value={totalDepth === 0 ? '' : totalDepth}
-          onChange={(e) => setTotalDepth(parseFloat(e.target.value))}
-        />
-      </label>
-      <br />
-      <button type="submit">Process File</button>
-    </form>
+    <div className="bg-success text-light">
+      <form onSubmit={handleSubmit} className="p-3 font-weight-bold">
+        <h1>Free Radioactive Tracer Reporting Tool</h1>
+        <div className="d-flex justify-content-start my-2">
+          <label className="mr-2" htmlFor="input-file">
+            Input File:
+          </label>
+          <input
+            id="input-file"
+            type="file"
+            onChange={handleFileChange}
+            accept=".las"
+          />
+        </div>
+
+        <div className="d-flex justify-content-start my-2">
+          <label htmlFor="output-file" className="mr-2">
+            Output File Name (not mandatory):
+          </label>
+          <input
+            id="output-file"
+            type="text"
+            value={fileName}
+            onChange={(e) => setFileName(e.target.value)}
+          />
+        </div>
+
+        <div className="d-flex justify-content-start my-2">
+          <label htmlFor="total-depth" className="mr-2">
+            Total Depth (not mandatory):
+          </label>
+          <input
+            id="total-depth"
+            type="number"
+            value={totalDepth === 0 ? '' : totalDepth}
+            onChange={(e) => setTotalDepth(parseFloat(e.target.value))}
+          />
+        </div>
+        <button
+          type="submit"
+          className="btn btn-outline-dark bg-light"
+          disabled={!hasFile}
+        >
+          Process File
+        </button>
+      </form>
+    </div>
   );
 }
 

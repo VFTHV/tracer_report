@@ -28,10 +28,9 @@ const DisplayData: React.FC<DisplayDataProps> = ({
 
   useEffect(() => {
     setTableData(passData);
-  }, [passData]);
-  useEffect(() => {
     setHeaderData(header);
-  }, [header]);
+    window.scrollTo(0, document.body.scrollHeight);
+  }, [passData, header]);
 
   const updatePassData = (updatedData: AllPassData, index: number) => {
     const newData = passData;
@@ -70,8 +69,12 @@ const DisplayData: React.FC<DisplayDataProps> = ({
         </tbody>
       </table>
 
-      <button type="submit" disabled={!enabled}>
-        Export to xlsx
+      <button
+        type="submit"
+        className="btn btn-outline-dark bg-light"
+        disabled={!enabled}
+      >
+        Create Spreadsheet
       </button>
     </form>
   );
