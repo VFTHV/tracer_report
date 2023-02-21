@@ -12,12 +12,14 @@ interface DisplayDataProps {
   passData: Array<AllPassData>;
   header: HeaderInfo;
   fileName: string;
+  standard: string;
 }
 
 const DisplayData: React.FC<DisplayDataProps> = ({
   passData,
   header,
   fileName,
+  standard,
 }) => {
   const hasHeader = Object.keys(header).length;
   const hasData = passData.length;
@@ -35,13 +37,12 @@ const DisplayData: React.FC<DisplayDataProps> = ({
   const updatePassData = (updatedData: AllPassData, index: number) => {
     const newData = passData;
     newData[index] = updatedData;
-
     setTableData(newData);
   };
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    ReportGenerator.report(tableData, headerData, fileName);
+    ReportGenerator.report(tableData, headerData, fileName, standard);
   };
 
   return (
@@ -69,11 +70,7 @@ const DisplayData: React.FC<DisplayDataProps> = ({
         </tbody>
       </table>
 
-      <button
-        type="submit"
-        className="btn btn-outline-dark bg-light"
-        disabled={!enabled}
-      >
+      <button type="submit" className="btn btn-success" disabled={!enabled}>
         Create Spreadsheet
       </button>
     </form>

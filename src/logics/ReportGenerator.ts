@@ -1,18 +1,21 @@
 import ExcelJS from 'exceljs';
 import { AllPassData } from './DataProcessor';
 import { HeaderInfo } from './HeaderProcessor';
+import { Standards } from './Standards';
 
 export class ReportGenerator {
   static report(
     passData: AllPassData[],
     headerData: HeaderInfo,
-    filename: string
+    filename: string,
+    standard: string
   ): void {
+    console.log(standard);
     const workbook = new ExcelJS.Workbook();
     const worksheet = workbook.addWorksheet('Sheet 1');
 
     ReportGenerator.createHeader(worksheet, headerData);
-    ReportGenerator.createTable(worksheet, passData);
+    ReportGenerator.createTable(worksheet, passData, standard);
     ReportGenerator.toXlsx(worksheet, workbook, filename);
   }
 
@@ -42,7 +45,8 @@ export class ReportGenerator {
 
   static createTable(
     worksheet: ExcelJS.Worksheet,
-    passData: AllPassData[]
+    passData: AllPassData[],
+    standard: string
   ): void {
     // adding tableHead and data
     const tblHead1 = worksheet.addRow([
@@ -106,6 +110,14 @@ export class ReportGenerator {
         );
 
         yellowRows.push(worksheet.rowCount);
+      }
+
+      if (
+        standard === Standards.Louisiana &&
+        !rowData.remark.newSlug &&
+        rowData.maxPeakDepth
+      ) {
+        worksheet.addRow(['', '', '', '', '', '', '', '', '', 'PUMPED'], 'i');
       }
 
       worksheet.addRow(

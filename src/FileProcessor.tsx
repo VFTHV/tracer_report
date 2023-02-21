@@ -3,20 +3,29 @@ import { LasFileReader } from './logics/LasFileReader';
 
 import { AllPassData } from './logics/DataProcessor';
 import { HeaderInfo } from './logics/HeaderProcessor';
+import { Standards } from './logics/Standards';
 
 function FileProcessor(props: {
   setPassData: React.Dispatch<React.SetStateAction<AllPassData[]>>;
   setHeader: React.Dispatch<React.SetStateAction<HeaderInfo>>;
   setFileName: React.Dispatch<React.SetStateAction<string>>;
+  setStandard: React.Dispatch<React.SetStateAction<string>>;
 }) {
   const [inputFile, setInputFile] = useState<File | null>(null);
   const [fileName, setFileName] = useState('');
   const [totalDepth, setTotalDepth] = useState(0);
+  const [standard, setStandard] = useState(Standards.Texas);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
       setInputFile(event.target.files[0]);
     }
+  };
+
+  const handleStandardChange = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    setStandard(event.target.value);
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -29,6 +38,7 @@ function FileProcessor(props: {
         props.setPassData(reader.passDataAndRemarks);
         props.setHeader(reader.header);
         props.setFileName(fileName);
+        props.setStandard(standard);
       });
     }
   };
@@ -45,6 +55,7 @@ function FileProcessor(props: {
           </label>
           <input
             id="input-file"
+            name="input-file"
             type="file"
             onChange={handleFileChange}
             accept=".las"
@@ -57,6 +68,7 @@ function FileProcessor(props: {
           </label>
           <input
             id="output-file"
+            name="output-file"
             type="text"
             value={fileName}
             onChange={(e) => setFileName(e.target.value)}
@@ -73,6 +85,21 @@ function FileProcessor(props: {
             value={totalDepth === 0 ? '' : totalDepth}
             onChange={(e) => setTotalDepth(parseFloat(e.target.value))}
           />
+        </div>
+
+        <div className="d-flex justify-content-start my-2">
+          <label htmlFor="state-standard" className="mr-2">
+            State Standard:
+          </label>
+          <select
+            id="state-standard"
+            name="state-standard"
+            value={standard}
+            onChange={handleStandardChange}
+          >
+            <option value={Standards.Texas}>{Standards.Texas}</option>
+            <option value={Standards.Louisiana}>{Standards.Louisiana}</option>
+          </select>
         </div>
         <button
           type="submit"
