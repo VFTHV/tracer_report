@@ -49,57 +49,62 @@ function FileProcessor(props: {
     <div className="bg-success text-light">
       <form onSubmit={handleSubmit} className="p-3 font-weight-bold">
         <h1>Free Radioactive Tracer Reporting Tool</h1>
-        <div className="d-flex justify-content-start my-2">
-          <label className="mr-2" htmlFor="input-file">
-            Input File:
-          </label>
-          <input
-            id="input-file"
-            name="input-file"
-            type="file"
-            onChange={handleFileChange}
-            accept=".las"
-          />
-        </div>
+        <div className="row">
+          <div className="col-12 col-sm-6 col-lg-3 my-2">
+            <label className="mr-2" htmlFor="input-file">
+              Input File:
+            </label>
+            <input
+              id="input-file"
+              name="input-file"
+              type="file"
+              onChange={handleFileChange}
+              accept=".las"
+            />
+          </div>
 
-        <div className="d-flex justify-content-start my-2">
-          <label htmlFor="output-file" className="mr-2">
-            Output File Name (not mandatory):
-          </label>
-          <input
-            id="output-file"
-            name="output-file"
-            type="text"
-            value={fileName}
-            onChange={(e) => setFileName(e.target.value)}
-          />
-        </div>
+          <div className="col-12 col-sm-6 col-lg-3 my-2">
+            <label htmlFor="output-file" className="mr-2">
+              Output File Name (not mandatory):
+            </label>
+            <input
+              className="form-control"
+              id="output-file"
+              name="output-file"
+              type="text"
+              value={fileName}
+              onChange={(e) => setFileName(e.target.value)}
+            />
+          </div>
 
-        <div className="d-flex justify-content-start my-2">
-          <label htmlFor="total-depth" className="mr-2">
-            Total Depth (not mandatory):
-          </label>
-          <input
-            id="total-depth"
-            type="number"
-            value={totalDepth === 0 ? '' : totalDepth}
-            onChange={(e) => setTotalDepth(parseFloat(e.target.value))}
-          />
-        </div>
+          <div className="col-12 col-sm-6 col-lg-3 my-2">
+            <label htmlFor="total-depth" className="mr-2">
+              Total Depth (not mandatory):
+            </label>
+            <input
+              className="form-control"
+              id="total-depth"
+              type="number"
+              value={totalDepth === 0 ? '' : totalDepth}
+              onChange={(e) => setTotalDepth(parseFloat(e.target.value))}
+            />
+          </div>
 
-        <div className="d-flex justify-content-start my-2">
-          <label htmlFor="state-standard" className="mr-2">
-            State Standard:
-          </label>
-          <select
-            id="state-standard"
-            name="state-standard"
-            value={standard}
-            onChange={handleStandardChange}
-          >
-            <option value={Standards.Texas}>{Standards.Texas}</option>
-            <option value={Standards.Louisiana}>{Standards.Louisiana}</option>
-          </select>
+          <div className="col-12 col-sm-6 col-lg-3 my-2">
+            <label htmlFor="state-standard" className="mr-2">
+              State Standard:
+            </label>
+            <select
+              className="custom-select"
+              id="state-standard"
+              name="state-standard"
+              value={standard}
+              onChange={handleStandardChange}
+            >
+              <option value={Standards.Texas}>{Standards.Texas}</option>
+              <option value={Standards.Louisiana}>{Standards.Louisiana}</option>
+            </select>
+          </div>
         </div>
         <button
           type="submit"
