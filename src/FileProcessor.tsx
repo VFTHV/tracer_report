@@ -21,7 +21,6 @@ function FileProcessor(props: {
       setInputFile(event.target.files[0]);
     }
   };
-  // ddddd
 
   const handleStandardChange = (
     event: React.ChangeEvent<HTMLSelectElement>
@@ -53,7 +52,7 @@ function FileProcessor(props: {
         <div className="row">
           <div className="col-12 col-sm-6 col-lg-3 my-2">
             <label className="mr-2" htmlFor="input-file">
-              Input File:
+              Input .las File*:
             </label>
             <input
               id="input-file"
@@ -66,7 +65,7 @@ function FileProcessor(props: {
 
           <div className="col-12 col-sm-6 col-lg-3 my-2">
             <label htmlFor="output-file" className="mr-2">
-              Output File Name (not mandatory):
+              Output File Name:
             </label>
             <input
               className="form-control"
@@ -75,12 +74,13 @@ function FileProcessor(props: {
               type="text"
               value={fileName}
               onChange={(e) => setFileName(e.target.value)}
+              placeholder="Optional"
             />
           </div>
 
           <div className="col-12 col-sm-6 col-lg-3 my-2">
             <label htmlFor="total-depth" className="mr-2">
-              Total Depth (not mandatory):
+              Total Depth:
             </label>
             <input
               className="form-control"
@@ -88,12 +88,13 @@ function FileProcessor(props: {
               type="number"
               value={totalDepth === 0 ? '' : totalDepth}
               onChange={(e) => setTotalDepth(parseFloat(e.target.value))}
+              placeholder="Optional"
             />
           </div>
 
           <div className="col-12 col-sm-6 col-lg-3 my-2">
             <label htmlFor="state-standard" className="mr-2">
-              State Standard:
+              State Standard*:
             </label>
             <select
               className="custom-select"
