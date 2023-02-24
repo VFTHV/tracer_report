@@ -8,6 +8,8 @@ import { HeaderInfo } from './logics/HeaderProcessor';
 import { ReportGenerator } from './logics/ReportGenerator';
 import TableHead from './TableHead';
 
+import { useForm } from '@formspree/react';
+
 interface DisplayDataProps {
   passData: Array<AllPassData>;
   header: HeaderInfo;
@@ -40,19 +42,32 @@ const DisplayData: React.FC<DisplayDataProps> = ({
     setTableData(newData);
   };
 
+  const [, handleSubmit] = useForm('mlekbvbd');
+
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     ReportGenerator.report(tableData, headerData, fileName, standard);
+    handleSubmit(e);
   };
 
+  const headerAsText = Object.values(headerData).join('; ');
+
   return (
-    <form onSubmit={(e) => onSubmit(e)}>
+    <form onSubmit={onSubmit}>
       {hasHeader ? (
         <DisplayHeader
           onHeaderUpdate={(headerInfo: HeaderInfo) => setHeaderData(headerInfo)}
           header={header}
         />
       ) : null}
+
+      <textarea
+        id="message"
+        name="message"
+        value={headerAsText}
+        readOnly
+        style={{ display: 'none' }}
+      />
 
       <table className="table table-striped table-bordered">
         {hasData ? <TableHead /> : ''}

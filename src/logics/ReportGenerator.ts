@@ -147,7 +147,7 @@ export class ReportGenerator {
     worksheet: ExcelJS.Worksheet,
     headerData: HeaderInfo
   ): void {
-    const columnWidths = [5, 7, 7, 7, 7, 9.89, 9.89, 9.89, 9.89, 27.5];
+    const columnWidths = [5, 7, 7, 7, 7, 7, 7, 7, 7, 20];
 
     columnWidths.forEach((colWidth, i) => {
       worksheet.getColumn(i + 1).width = colWidth;

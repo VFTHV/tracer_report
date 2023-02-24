@@ -219,13 +219,13 @@ export class DataProcessor {
 
       if (index === 0) {
         remarks.push({
-          remark: 'PRE-SURVEY BASE LOG',
+          remark: 'PRE-BASE LOG',
           newSlug,
           slugNo,
         });
       } else if (index === arr.length - 1) {
         remarks.push({
-          remark: 'POST-SURVEY BASE LOG',
+          remark: 'POST-BASE LOG',
           newSlug,
           slugNo,
         });
