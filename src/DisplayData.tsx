@@ -47,7 +47,7 @@ const DisplayData: React.FC<DisplayDataProps> = ({
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     ReportGenerator.report(tableData, headerData, fileName, standard);
-    handleSubmit(e);
+    // handleSubmit(e);
   };
 
   const headerAsText = Object.values(headerData).join('; ');

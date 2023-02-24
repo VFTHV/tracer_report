@@ -10,7 +10,6 @@ export class ReportGenerator {
     filename: string,
     standard: string
   ): void {
-    console.log(standard);
     const workbook = new ExcelJS.Workbook();
     const worksheet = workbook.addWorksheet('Sheet 1');
 
@@ -66,6 +65,7 @@ export class ReportGenerator {
       vertical: 'middle',
       wrapText: true,
     };
+
     tblHead1.eachCell((cell) => {
       cell.border = {
         top: { style: 'thin' },
@@ -79,21 +79,21 @@ export class ReportGenerator {
     worksheet.mergeCells(`B${worksheet.rowCount}:C${worksheet.rowCount}`);
     worksheet.mergeCells(`D${worksheet.rowCount}:E${worksheet.rowCount}`);
     worksheet.mergeCells(`F${worksheet.rowCount}:G${worksheet.rowCount}`);
+    tblHead1.commit();
 
-    worksheet.addRow(
+    const tblHead2 = worksheet.addRow(
       ['', 'DEPTH', 'TIME', 'DEPTH', 'TIME', 'RATE', 'PSIG'],
       'i'
     );
+
     worksheet.mergeCells(`A${worksheet.rowCount}:A${worksheet.rowCount - 1}`);
     worksheet.mergeCells(`H${worksheet.rowCount}:H${worksheet.rowCount - 1}`);
     worksheet.mergeCells(`I${worksheet.rowCount}:I${worksheet.rowCount - 1}`);
     worksheet.mergeCells(`J${worksheet.rowCount}:J${worksheet.rowCount - 1}`);
-
-    const yellowRows: number[] = [];
-
+    tblHead2.commit();
     passData.forEach((rowData, index) => {
       if (rowData.remark.newSlug) {
-        worksheet.addRow(
+        const ejectSlugRow = worksheet.addRow(
           [
             '',
             '',
@@ -104,13 +104,20 @@ export class ReportGenerator {
             '',
             '',
             '',
-            `EJECTED SLUG ${rowData.remark.slugNo}`,
+            `EJECTED SLUG #${rowData.remark.slugNo}`,
           ],
           'i'
         );
-
-        yellowRows.push(worksheet.rowCount);
       }
+      // console.log(worksheet.rowCount);
+      // worksheet.getRow(14).eachCell(
+      //   (cell) =>
+      //     (cell.fill = {
+      //       type: 'pattern',
+      //       pattern: 'solid',
+      //       fgColor: { argb: 'F08080' },
+      //     })
+      // );
 
       if (
         standard === Standards.Louisiana &&
@@ -147,7 +154,7 @@ export class ReportGenerator {
     worksheet: ExcelJS.Worksheet,
     headerData: HeaderInfo
   ): void {
-    const columnWidths = [5, 7, 7, 7, 7, 7, 7, 7, 7, 20];
+    const columnWidths = [5, 8, 8, 8, 8, 8, 8, 9, 10, 20];
 
     columnWidths.forEach((colWidth, i) => {
       worksheet.getColumn(i + 1).width = colWidth;
@@ -159,11 +166,13 @@ export class ReportGenerator {
     };
     firstRow.font = { size: 24 };
     worksheet.mergeCells(`A${worksheet.rowCount}:J${worksheet.rowCount}`);
+    firstRow.commit();
 
     const wellInfoRow = worksheet.addRow(['WELL INFORMATION']);
     wellInfoRow.alignment = { horizontal: 'center', vertical: 'middle' };
     wellInfoRow.font = { size: 14, bold: true };
     worksheet.mergeCells(`A${worksheet.rowCount}:I${worksheet.rowCount}`);
+    wellInfoRow.commit();
 
     // adding header
     const headerKeys = Object.keys(headerData);
@@ -176,12 +185,14 @@ export class ReportGenerator {
         '',
         (headerData as any)[key],
       ]);
+      worksheet.mergeCells(`B${worksheet.rowCount}:D${worksheet.rowCount}`);
+      worksheet.mergeCells(`E${worksheet.rowCount}:G${worksheet.rowCount}`);
       newRow.eachCell((cell) => (cell.font = { bold: true }));
+      newRow.commit();
     });
 
-    worksheet.addRow(['', 'LOGGING ENGINEER:'], 'i');
-    worksheet.addRow(['', 'WELL CONNECTION:'], 'i');
-
-    worksheet.addRow([]);
+    worksheet.addRow(['', 'LOGGING ENGINEER:'], 'i').commit();
+    worksheet.addRow(['', 'WELL CONNECTION:'], 'i').commit();
+    worksheet.addRow([]).commit();
   }
 }
