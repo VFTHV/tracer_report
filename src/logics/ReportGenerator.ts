@@ -132,6 +132,7 @@ export class ReportGenerator {
           cell.alignment = CellStyle.alignCenter as Partial<ExcelJS.Alignment>;
           cell.font = { bold: true, color: { argb: 'FF0000' } };
         });
+        pumpedRow.commit();
       }
 
       const dataRow = worksheet.addRow([
@@ -152,6 +153,7 @@ export class ReportGenerator {
         cell.alignment = CellStyle.alignCenter as Partial<ExcelJS.Alignment>;
         cell.font = { bold: false };
       });
+      dataRow.commit();
     });
   }
 
@@ -159,7 +161,7 @@ export class ReportGenerator {
     worksheet: ExcelJS.Worksheet,
     headerData: HeaderInfo
   ): void {
-    const columnWidths = [5, 8, 8, 8, 8, 8, 8, 9, 10, 20];
+    const columnWidths = [5, 8, 8, 8, 8, 8, 8, 9, 10, 16];
 
     columnWidths.forEach((colWidth, i) => {
       worksheet.getColumn(i + 1).width = colWidth;

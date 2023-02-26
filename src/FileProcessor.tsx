@@ -4,6 +4,7 @@ import { LasFileReader } from './logics/LasFileReader';
 import { AllPassData } from './logics/DataProcessor';
 import { HeaderInfo } from './logics/HeaderProcessor';
 import { Standards } from './logics/Standards';
+import Instructions from './Instructions';
 
 function FileProcessor(props: {
   setPassData: React.Dispatch<React.SetStateAction<AllPassData[]>>;
@@ -52,7 +53,7 @@ function FileProcessor(props: {
         <div className="row">
           <div className="col-12 col-sm-6 col-lg-3 my-2">
             <label className="mr-2" htmlFor="input-file">
-              Input .las File*:
+              Step 1. Input .las*:
             </label>
             <input
               id="input-file"
@@ -65,7 +66,7 @@ function FileProcessor(props: {
 
           <div className="col-12 col-sm-6 col-lg-3 my-2">
             <label htmlFor="output-file" className="mr-2">
-              Output File Name:
+              Step 2. Name Output File:
             </label>
             <input
               className="form-control"
@@ -80,7 +81,7 @@ function FileProcessor(props: {
 
           <div className="col-12 col-sm-6 col-lg-3 my-2">
             <label htmlFor="total-depth" className="mr-2">
-              Total Depth:
+              Step 3. Input Total Depth:
             </label>
             <input
               className="form-control"
@@ -94,7 +95,7 @@ function FileProcessor(props: {
 
           <div className="col-12 col-sm-6 col-lg-3 my-2">
             <label htmlFor="state-standard" className="mr-2">
-              State Standard*:
+              Step 4. Choose State Standard*:
             </label>
             <select
               className="custom-select"
@@ -107,6 +108,8 @@ function FileProcessor(props: {
               <option value={Standards.Louisiana}>{Standards.Louisiana}</option>
             </select>
           </div>
+
+          <Instructions />
         </div>
         <button
           type="submit"
