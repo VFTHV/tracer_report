@@ -117,7 +117,7 @@ export class ReportGenerator {
       ) {
         const pumpedRow = worksheet.addRow([
           '',
-          '',
+          'X BBL',
           '',
           '',
           '',
@@ -128,10 +128,9 @@ export class ReportGenerator {
           'PUMPED',
         ]);
         pumpedRow.eachCell((cell) => {
-          cell.fill = CellStyle.fillYellow as ExcelJS.Fill;
           cell.border = CellStyle.borderThin as Partial<ExcelJS.Borders>;
           cell.alignment = CellStyle.alignCenter as Partial<ExcelJS.Alignment>;
-          cell.font = { bold: true };
+          cell.font = { bold: true, color: { argb: 'FF0000' } };
         });
       }
 

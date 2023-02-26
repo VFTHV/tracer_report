@@ -159,7 +159,7 @@ export class DataProcessor {
       const secondsToTime = (seconds: string): string => {
         const secondsNum = parseFloat(seconds);
         const hours = Math.floor(secondsNum / 3600);
-        const minutes = Math.floor((secondsNum / 3600 - hours) * 60);
+        const minutes = Math.round((secondsNum % 3600) / 60);
         const formattedHrs = hours.toString().padStart(2, '0');
         const formattedMins = minutes.toString().padStart(2, '0');
 
@@ -239,7 +239,7 @@ export class DataProcessor {
           statCheckNo++;
         } else {
           remarks.push({
-            remark: `TIME DRIVE ${timeDriveNo}`,
+            remark: `TIME DRIVE #${timeDriveNo}`,
             newSlug,
             slugNo,
           });
