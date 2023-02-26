@@ -2,6 +2,7 @@ import ExcelJS from 'exceljs';
 import { AllPassData } from './DataProcessor';
 import { HeaderInfo } from './HeaderProcessor';
 import { Standards } from './Standards';
+import { CellStyle } from './CellStyle';
 
 export class ReportGenerator {
   static report(
@@ -11,7 +12,9 @@ export class ReportGenerator {
     standard: string
   ): void {
     const workbook = new ExcelJS.Workbook();
-    const worksheet = workbook.addWorksheet('Sheet 1');
+    const worksheet = workbook.addWorksheet('Sheet 1', {
+      pageSetup: { fitToPage: true, fitToWidth: 1 },
+    });
 
     ReportGenerator.createHeader(worksheet, headerData);
     ReportGenerator.createTable(worksheet, passData, standard);
@@ -60,19 +63,11 @@ export class ReportGenerator {
       'SLUG PEAK',
       'REMARKS',
     ]);
-    tblHead1.alignment = {
-      horizontal: 'center',
-      vertical: 'middle',
-      wrapText: true,
-    };
+
+    tblHead1.alignment = CellStyle.alignCenter as Partial<ExcelJS.Alignment>;
 
     tblHead1.eachCell((cell) => {
-      cell.border = {
-        top: { style: 'thin' },
-        left: { style: 'thin' },
-        bottom: { style: 'thin' },
-        right: { style: 'thin' },
-      };
+      cell.border = CellStyle.borderThin as Partial<ExcelJS.Borders>;
       cell.font = { bold: true };
     });
 
@@ -93,61 +88,72 @@ export class ReportGenerator {
     tblHead2.commit();
     passData.forEach((rowData, index) => {
       if (rowData.remark.newSlug) {
-        const ejectSlugRow = worksheet.addRow(
-          [
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            `EJECTED SLUG #${rowData.remark.slugNo}`,
-          ],
-          'i'
-        );
+        const ejectSlugRow = worksheet.addRow([
+          '',
+          '',
+          '',
+          '',
+          '',
+          '',
+          '',
+          '',
+          '',
+          `EJECTED SLUG #${rowData.remark.slugNo}`,
+        ]);
+        ejectSlugRow.eachCell((cell) => {
+          cell.fill = CellStyle.fillYellow as ExcelJS.Fill;
+          cell.border = CellStyle.borderThin as Partial<ExcelJS.Borders>;
+          cell.alignment = CellStyle.alignCenter as Partial<ExcelJS.Alignment>;
+          cell.font = { bold: true };
+        });
+
+        ejectSlugRow.commit();
       }
-      // console.log(worksheet.rowCount);
-      // worksheet.getRow(14).eachCell(
-      //   (cell) =>
-      //     (cell.fill = {
-      //       type: 'pattern',
-      //       pattern: 'solid',
-      //       fgColor: { argb: 'F08080' },
-      //     })
-      // );
 
       if (
         standard === Standards.Louisiana &&
         !rowData.remark.newSlug &&
         rowData.maxPeakDepth
       ) {
-        worksheet.addRow(['', '', '', '', '', '', '', '', '', 'PUMPED'], 'i');
+        const pumpedRow = worksheet.addRow([
+          '',
+          '',
+          '',
+          '',
+          '',
+          '',
+          '',
+          '',
+          '',
+          'PUMPED',
+        ]);
+        pumpedRow.eachCell((cell) => {
+          cell.fill = CellStyle.fillYellow as ExcelJS.Fill;
+          cell.border = CellStyle.borderThin as Partial<ExcelJS.Borders>;
+          cell.alignment = CellStyle.alignCenter as Partial<ExcelJS.Alignment>;
+          cell.font = { bold: true };
+        });
       }
 
-      worksheet.addRow(
-        [
-          index + 1,
-          rowData.depthStart,
-          rowData.timeStart,
-          rowData.depthFinish,
-          rowData.timeFinish,
-          '',
-          '',
-          rowData.logSpeed,
-          rowData.maxPeakDepth,
-          rowData.remark.remark,
-        ],
-        'i'
-      );
+      const dataRow = worksheet.addRow([
+        index + 1,
+        rowData.depthStart,
+        rowData.timeStart,
+        rowData.depthFinish,
+        rowData.timeFinish,
+        '',
+        '',
+        rowData.logSpeed,
+        rowData.maxPeakDepth,
+        rowData.remark.remark,
+      ]);
+      dataRow.eachCell((cell) => {
+        cell.fill = CellStyle.fillWhite as ExcelJS.Fill;
+        cell.border = CellStyle.borderThin as Partial<ExcelJS.Borders>;
+        cell.alignment = CellStyle.alignCenter as Partial<ExcelJS.Alignment>;
+        cell.font = { bold: false };
+      });
     });
-    // worksheet.getCell('A10').fill = {
-    //   type: 'pattern',
-    //   pattern: 'solid',
-    //   fgColor: { argb: 'FFFFF000' },
-    // };
   }
 
   static createHeader(
