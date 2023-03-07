@@ -208,7 +208,7 @@ export class ReportGenerator {
     data: number[][],
     columnHeader: string[],
     lasHeader: string,
-    fileName: File
+    fileName: string | undefined
   ): void {
     // convert averages to string with 4 decimals
     let averagesToString = data.map((row) =>
@@ -237,7 +237,7 @@ export class ReportGenerator {
 
     saveAs(
       new Blob([final], { type: 'text/plain;charset=utf-8' }),
-      `${fileName}.LAS`
+      `${fileName ? fileName : 'report'}.LAS`
     );
   }
 }

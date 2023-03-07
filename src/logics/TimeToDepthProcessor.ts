@@ -1,4 +1,17 @@
 export class TimeToDepthProcessor {
+  static convertColHeader(data: string[][]): string[] {
+    const columnHeader = data.filter((row) => row.includes('~A')).flat();
+    const depthIndex = columnHeader.findIndex((h) => h === 'ADPTH') - 1;
+    // replacing first column with ADPTH curve
+
+    if (depthIndex < 0) {
+      alert('Please make sure LAS file has ADPTH curve');
+    }
+
+    columnHeader[1] = 'Depth';
+
+    return columnHeader;
+  }
   static timeToDepthData(data: string[][]): number[][] {
     const columnHeader = data.filter((row) => row.includes('~A')).flat();
     const depthIndex = columnHeader.findIndex((h) => h === 'ADPTH') - 1;
@@ -14,7 +27,6 @@ export class TimeToDepthProcessor {
       .map((row) => row.map((item) => parseFloat(item.toString())));
 
     // trim data from non-zero speed, leaving only stations
-    // replacing first column with ADPTH curve
 
     if (depthIndex < 0) {
       alert('Please make sure LAS file has ADPTH curve');
@@ -69,9 +81,12 @@ export class TimeToDepthProcessor {
     return averages;
   }
 
-  static timeToDepthHeader(data: string[][]): string {
-    const end = data.toString().lastIndexOf('~A');
-    const lasHeader = data.toString().substring(0, end);
+  static timeToDepthHeader(
+    initialData: string,
+    convertedData: number[][]
+  ): string {
+    const end = initialData.toString().lastIndexOf('~A');
+    const lasHeader = initialData.toString().substring(0, end);
 
     const editedHeader = lasHeader
       .replace(/TIME\.SEC/g, 'DEPT.FT')
@@ -79,11 +94,13 @@ export class TimeToDepthProcessor {
       .replace('Elapsed Time', 'Depth')
       .replace(
         /STRT\.FT\s+(-\d+(\.\d+)?):/,
-        `STRT.FT           ${data[0][0].toString()}:`
+        `STRT.FT           ${convertedData[0][0].toString()}:`
       )
       .replace(
         /STOP\.FT\s+(\d+(\.\d+)?):/,
-        `STOP.FT           ${data[data.length - 1][0].toString()}:`
+        `STOP.FT           ${convertedData[
+          convertedData.length - 1
+        ][0].toString()}:`
       );
 
     return editedHeader;

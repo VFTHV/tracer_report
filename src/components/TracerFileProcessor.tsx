@@ -6,7 +6,7 @@ import { HeaderInfo } from '../logics/HeaderProcessor';
 import { Standards } from '../logics/Standards';
 import Instructions from './Instructions';
 
-function FileProcessor(props: {
+function TracerFileProcessor(props: {
   setPassData: React.Dispatch<React.SetStateAction<AllPassData[]>>;
   setHeader: React.Dispatch<React.SetStateAction<HeaderInfo>>;
   setFileName: React.Dispatch<React.SetStateAction<string>>;
@@ -123,4 +123,4 @@ function FileProcessor(props: {
   );
 }
 
-export default FileProcessor;
+export default TracerFileProcessor;

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import FileProcessor from '../components/FileProcessor';
+import TracerFileProcessor from '../components/TracerFileProcessor';
 import DisplayData from '../components/DisplayData';
 import { AllPassData } from '../logics/TracerProcessor';
 import { HeaderInfo } from '../logics/HeaderProcessor';
@@ -13,7 +13,7 @@ export default function TracerReport() {
   const [standard, setStandard] = useState(Standards.Texas);
   return (
     <>
-      <FileProcessor
+      <TracerFileProcessor
         setPassData={setPassData}
         setHeader={setHeader}
         setFileName={setFileName}

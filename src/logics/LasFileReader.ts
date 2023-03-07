@@ -13,12 +13,16 @@ export class LasFileReader {
 
   singlePassData: string[][];
 
-  constructor(public fileName: File, public totalDepth: number) {}
+  constructor(
+    public file: File,
+    public totalDepth?: number,
+    public fileName?: string
+  ) {}
 
   async readTracer(): Promise<void> {
     return new Promise((resolve, reject) => {
       const fileReader = new FileReader();
-      fileReader.readAsText(this.fileName);
+      fileReader.readAsText(this.file);
 
       fileReader.onloadend = () => {
         if (fileReader.result !== null) {
@@ -41,7 +45,7 @@ export class LasFileReader {
   async readTimeToDepth(): Promise<void> {
     return new Promise((resolve, reject) => {
       const fileReader = new FileReader();
-      fileReader.readAsText(this.fileName);
+      fileReader.readAsText(this.file);
 
       fileReader.onloadend = () => {
         if (fileReader.result !== null) {
@@ -50,17 +54,19 @@ export class LasFileReader {
           const depthConvertedData = TimeToDepthProcessor.timeToDepthData(
             this.singlePassData
           );
+          const initalData = fileReader.result.toString();
           const depthConvertedHeader = TimeToDepthProcessor.timeToDepthHeader(
+            initalData,
+            depthConvertedData
+          );
+
+          const convertedColHeader = TimeToDepthProcessor.convertColHeader(
             this.singlePassData
           );
 
-          const columnHeader = this.singlePassData
-            .filter((row) => row.includes('~A'))
-            .flat();
-
           ReportGenerator.timeToDepthReport(
             depthConvertedData,
-            columnHeader,
+            convertedColHeader,
             depthConvertedHeader,
             this.fileName
           );
