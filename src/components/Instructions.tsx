@@ -8,7 +8,7 @@ export default function Instructions() {
         href={`${process.env.PUBLIC_URL}/How_to_create_las_for_RAT_report.pdf`}
         download
       >
-        Click for multiple-pass .las instuctions
+        How to create multiple-pass .las
       </a>
     </div>
   );

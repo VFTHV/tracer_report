@@ -3,9 +3,9 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import DisplayHeader from './DisplayHeader';
 import DisplayTable from './DisplayTable';
-import { AllPassData } from './logics/DataProcessor';
-import { HeaderInfo } from './logics/HeaderProcessor';
-import { ReportGenerator } from './logics/ReportGenerator';
+import { AllPassData } from '../logics/TracerProcessor';
+import { HeaderInfo } from '../logics/HeaderProcessor';
+import { ReportGenerator } from '../logics/ReportGenerator';
 import TableHead from './TableHead';
 
 import { useForm } from '@formspree/react';
@@ -46,8 +46,8 @@ const DisplayData: React.FC<DisplayDataProps> = ({
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    ReportGenerator.report(tableData, headerData, fileName, standard);
-    // handleSubmit(e);
+    ReportGenerator.tracerReport(tableData, headerData, fileName, standard);
+    handleSubmit(e);
   };
 
   const headerAsText = Object.values(headerData).join('; ');

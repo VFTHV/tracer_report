@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { LasFileReader } from './logics/LasFileReader';
+import { LasFileReader } from '../logics/LasFileReader';
 
-import { AllPassData } from './logics/DataProcessor';
-import { HeaderInfo } from './logics/HeaderProcessor';
-import { Standards } from './logics/Standards';
+import { AllPassData } from '../logics/TracerProcessor';
+import { HeaderInfo } from '../logics/HeaderProcessor';
+import { Standards } from '../logics/Standards';
 import Instructions from './Instructions';
 
 function FileProcessor(props: {
@@ -35,7 +35,7 @@ function FileProcessor(props: {
       alert('Please select a file');
     } else {
       const reader = new LasFileReader(inputFile, totalDepth);
-      reader.read().then(() => {
+      reader.readTracer().then(() => {
         props.setPassData(reader.passDataAndRemarks);
         props.setHeader(reader.header);
         props.setFileName(fileName);
@@ -53,7 +53,7 @@ function FileProcessor(props: {
         <div className="row">
           <div className="col-12 col-sm-6 col-lg-3 my-2">
             <label className="mr-2" htmlFor="input-file">
-              Step 1. Input .las*:
+              Step 1. Multiple-pass .las*:
             </label>
             <input
               id="input-file"

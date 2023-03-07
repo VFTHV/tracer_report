@@ -9,7 +9,7 @@ export interface HeaderInfo {
 }
 
 export class HeaderProcessor {
-  static convertHeader(data: string[][][]): string[] {
+  static getHeader(data: string[][][]): string[] {
     const onePass = data[0];
     const lastLineIndex = onePass.findIndex(
       (line: string[]) => line[0] === '~A'
@@ -18,7 +18,7 @@ export class HeaderProcessor {
     const headerStrings = headerArrays.map((row: string[]): string => {
       return row.join(' ');
     });
-
+    console.log(headerStrings);
     return headerStrings;
   }
 
@@ -33,7 +33,7 @@ export class HeaderProcessor {
   };
 
   static headerInfo(data: string[][][]): HeaderInfo {
-    const header = HeaderProcessor.convertHeader(data);
+    const header = HeaderProcessor.getHeader(data);
 
     // const headerInfo: HeaderInfo = {}
     const company: string = HeaderProcessor.getDetail(header, 'COMP');

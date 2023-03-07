@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import { HeaderInfo } from './logics/HeaderProcessor';
+import { HeaderInfo } from '../logics/HeaderProcessor';
 
 interface DisplayHeaderProps {
   header: HeaderInfo;

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { AllPassData } from './logics/DataProcessor';
+import { AllPassData } from '../logics/TracerProcessor';
 
 interface DisplayTableProps {
   data: AllPassData;

@@ -1,31 +1,70 @@
-import { DataProcessor } from './DataProcessor';
+import { TracerProcessor } from './TracerProcessor';
+import { TimeToDepthProcessor } from './TimeToDepthProcessor';
 import { LasParser } from './LasParser';
 import { HeaderProcessor } from './HeaderProcessor';
-import { AllPassData } from './DataProcessor';
+import { AllPassData } from './TracerProcessor';
 import { HeaderInfo } from './HeaderProcessor';
+import { ReportGenerator } from './ReportGenerator';
 
 export class LasFileReader {
-  data: string[][][];
+  multiPassData: string[][][];
   passDataAndRemarks: Array<AllPassData>;
   header: HeaderInfo;
 
-  constructor(public file: File, public totalDepth: number) {}
+  singlePassData: string[][];
 
-  async read(): Promise<void> {
+  constructor(public fileName: File, public totalDepth: number) {}
+
+  async readTracer(): Promise<void> {
     return new Promise((resolve, reject) => {
       const fileReader = new FileReader();
-      fileReader.readAsText(this.file);
+      fileReader.readAsText(this.fileName);
 
       fileReader.onloadend = () => {
         if (fileReader.result !== null) {
-          this.data = LasParser.parse(fileReader.result);
+          this.multiPassData = LasParser.parseMultiplePasses(fileReader.result);
 
-          this.passDataAndRemarks = DataProcessor.getAllPassData(
-            this.data,
+          this.passDataAndRemarks = TracerProcessor.getAllPassData(
+            this.multiPassData,
             this.totalDepth
           );
 
-          this.header = HeaderProcessor.headerInfo(this.data);
+          this.header = HeaderProcessor.headerInfo(this.multiPassData);
+          resolve();
+        } else {
+          reject(new Error('File could not be read'));
+        }
+      };
+    });
+  }
+
+  async readTimeToDepth(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      const fileReader = new FileReader();
+      fileReader.readAsText(this.fileName);
+
+      fileReader.onloadend = () => {
+        if (fileReader.result !== null) {
+          this.singlePassData = LasParser.parseOnePass(fileReader.result);
+
+          const depthConvertedData = TimeToDepthProcessor.timeToDepthData(
+            this.singlePassData
+          );
+          const depthConvertedHeader = TimeToDepthProcessor.timeToDepthHeader(
+            this.singlePassData
+          );
+
+          const columnHeader = this.singlePassData
+            .filter((row) => row.includes('~A'))
+            .flat();
+
+          ReportGenerator.timeToDepthReport(
+            depthConvertedData,
+            columnHeader,
+            depthConvertedHeader,
+            this.fileName
+          );
+
           resolve();
         } else {
           reject(new Error('File could not be read'));
