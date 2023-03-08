@@ -23,43 +23,77 @@ export default function FileProcessorTTD() {
     }
   };
 
+  const hasFile = Boolean(inputFile);
+
   return (
-    <form onSubmit={handleSubmit}>
-      <label>
-        Input File:
-        <input type="file" onChange={handleFileChange} accept=".las" />
-      </label>
-      <br />
-      <label>
-        Output File Name (not mandatory):
-        <input
-          type="text"
-          value={fileName}
-          onChange={(e) => setFileName(e.target.value)}
-        />
-      </label>
-      <br />
-      {/* <label>
+    <div className="bg-success text-light">
+      <form onSubmit={handleSubmit} className="p-3 font-weight-bold">
+        <h1>Free Time Stations To Depth .las Converting Tool</h1>
+        <div className="row">
+          <div className="col-12 col-sm-6 col-lg-3 my-2">
+            <label className="mr-2" htmlFor="input-file">
+              Step 1. Input .las*:
+            </label>
+            <input
+              id="input-file"
+              name="input-file"
+              type="file"
+              onChange={handleFileChange}
+              accept=".las"
+            />
+          </div>
+          <div className="col-12 col-sm-6 col-lg-3 my-2">
+            <label className="mr-2" htmlFor="output-file">
+              Step 2. Name Output File:
+            </label>
+            <input
+              className="form-control"
+              id="output-file"
+              name="output-file"
+              type="text"
+              value={fileName}
+              onChange={(e) => setFileName(e.target.value)}
+              placeholder="Optional"
+            />
+          </div>
+
+          {/* <label>
+            Output File Name (not mandatory):
+            <input
+              type="text"
+              value={fileName}
+              onChange={(e) => setFileName(e.target.value)}
+            />
+          </label> */}
+
+          {/* <label>
         Resample data between depth points?
         <input
-          type="checkbox"
-          checked={resampleDisabled}
-          onChange={() => setResampleDisabled(!resampleDisabled)}
+        type="checkbox"
+        checked={resampleDisabled}
+        onChange={() => setResampleDisabled(!resampleDisabled)}
         />
-      </label>
-      <br />
-      <label>
+        </label>
+        <br />
+        <label>
         Set depth distance between samples to resample and interpolate the data
         (not mandatory):
         <input
-          type="number"
-          value={step}
-          onChange={(e) => setStep(parseFloat(e.target.value))}
+        type="number"
+        value={step}
+        onChange={(e) => setStep(parseFloat(e.target.value))}
           disabled={!resampleDisabled}
-        />
-      </label> */}
-      <br />
-      <button type="submit">Process File</button>
-    </form>
+          />
+        </label> */}
+        </div>
+        <button
+          type="submit"
+          className="btn btn-outline-dark bg-light"
+          disabled={!hasFile}
+        >
+          Process File
+        </button>
+      </form>
+    </div>
   );
 }
