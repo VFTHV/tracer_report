@@ -13,8 +13,10 @@ const store = configureStore({
   },
 });
 
-export { store, changeStandard, changeFileName, changeTotalDepth };
+// export { store, changeStandard, changeFileName, changeTotalDepth };
+export { store };
+export * from './slices/tracerSlice';
 
-export interface Store {
+export interface StoreState {
   tracer: TracerState;
 }

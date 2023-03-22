@@ -1,25 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { setHeader, StoreState } from '../store';
 
 import { HeaderInfo } from '../logics/HeaderProcessor';
 
-interface DisplayHeaderProps {
-  header: HeaderInfo;
-  onHeaderUpdate: (updatedHeader: HeaderInfo) => void;
-}
-
-const DisplayHeader: React.FC<DisplayHeaderProps> = ({
-  header,
-  onHeaderUpdate,
-}) => {
-  const [headerData, setHeaderData] = useState(header);
-
-  useEffect(() => {
-    setHeaderData(header);
-  }, [header]);
+const DisplayHeader: React.FC = () => {
+  const dispatch = useDispatch();
+  const headerData = useSelector((state: StoreState) => state.tracer.header);
 
   const handleHeaderChange = (field: keyof HeaderInfo, value: string) => {
-    setHeaderData({ ...headerData, [field]: value });
-    onHeaderUpdate({ ...headerData, [field]: value });
+    dispatch(setHeader({ ...headerData, [field]: value }));
   };
 
   const renderHeader = () => {

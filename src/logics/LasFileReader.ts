@@ -8,7 +8,7 @@ import { ReportGenerator } from './ReportGenerator';
 
 export class LasFileReader {
   multiPassData: string[][][];
-  passDataAndRemarks: Array<AllPassData>;
+  passDataAndRemarks: AllPassData[];
   header: HeaderInfo;
 
   singlePassData: string[][];

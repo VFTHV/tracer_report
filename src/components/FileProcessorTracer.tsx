@@ -11,16 +11,12 @@ import {
   changeFileName,
   changeStandard,
   changeTotalDepth,
-  Store,
+  setAllPassData,
+  setHeader,
 } from '../store';
 import { useSelector } from 'react-redux';
 
-function FileProcessorTracer(props: {
-  setPassData: React.Dispatch<React.SetStateAction<AllPassData[]>>;
-  setHeader: React.Dispatch<React.SetStateAction<HeaderInfo>>;
-  setFileName: React.Dispatch<React.SetStateAction<string>>;
-  setStandard: React.Dispatch<React.SetStateAction<string>>;
-}) {
+function FileProcessorTracer() {
   const [inputFile, setInputFile] = useState<null | File>(null);
 
   const dispatch = useDispatch();
@@ -47,10 +43,8 @@ function FileProcessorTracer(props: {
     } else {
       const reader = new LasFileReader(inputFile, totalDepth);
       reader.readTracer().then(() => {
-        props.setPassData(reader.passDataAndRemarks);
-        props.setHeader(reader.header);
-        props.setFileName(fileName);
-        props.setStandard(standard);
+        dispatch(setAllPassData(reader.passDataAndRemarks));
+        dispatch(setHeader(reader.header));
       });
     }
   };

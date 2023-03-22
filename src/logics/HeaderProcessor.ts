@@ -18,7 +18,7 @@ export class HeaderProcessor {
     const headerStrings = headerArrays.map((row: string[]): string => {
       return row.join(' ');
     });
-    console.log(headerStrings);
+
     return headerStrings;
   }
 
