@@ -9,6 +9,7 @@ export interface TracerState {
   totalDepth: number;
   file: File | null;
   allPassData: AllPassData[];
+  reportablePassData: AllPassData[];
   header: HeaderInfo;
 }
 
@@ -18,6 +19,7 @@ const initialState: TracerState = {
   totalDepth: 0,
   file: null,
   allPassData: [],
+  reportablePassData: [],
   header: {
     date: '',
     company: '',

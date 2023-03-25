@@ -1,6 +1,7 @@
 import { DataProcessor } from './DataProcessor';
 
 export interface AllPassData {
+  [key: string]: any;
   runNo: number;
   depthStart: number;
   depthFinish: number;
@@ -9,7 +10,9 @@ export interface AllPassData {
   logSpeed: number | string;
   maxPeakValue: string | number;
   maxPeakDepth: number | string;
-  remark: RemarkInfo;
+  newSlug: boolean;
+  remark: string;
+  slugNo: number;
 }
 
 export interface PassInfo {
@@ -40,7 +43,7 @@ export class TracerProcessor extends DataProcessor {
     const remarks = TracerProcessor.createRemarks(passData);
 
     const combinedData = passData.map((pass, i): AllPassData => {
-      return { ...pass, ['remark']: remarks[i] };
+      return { ...pass, ...remarks[i] };
     });
     return combinedData;
   }
@@ -81,7 +84,7 @@ export class TracerProcessor extends DataProcessor {
         const averageLSPD =
           lspdCurve.reduce((total, num) => total + parseFloat(num), 0) /
           lspdCurve.length;
-        logSpeed = Math.abs(Math.floor(averageLSPD));
+        logSpeed = Math.abs(Math.floor(averageLSPD)).toString();
 
         if (runIndex > 0 && runIndex < data.length - 1) {
           // assigning maxPeak
@@ -143,8 +146,8 @@ export class TracerProcessor extends DataProcessor {
 
       const passInfo = {
         depthStart,
-        depthFinish,
         timeStart,
+        depthFinish,
         timeFinish,
         logSpeed,
         maxPeakDepth,
@@ -195,7 +198,7 @@ export class TracerProcessor extends DataProcessor {
           newSlug,
           slugNo,
         });
-      } else if (typeof rowData.logSpeed !== 'number') {
+      } else if (!Number(rowData.logSpeed)) {
         if (passDuration < 15) {
           remarks.push({
             remark: `STAT CHECK #${statCheckNo}`,

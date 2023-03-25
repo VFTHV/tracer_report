@@ -88,7 +88,7 @@ export class ReportGenerator {
     worksheet.mergeCells(`J${worksheet.rowCount}:J${worksheet.rowCount - 1}`);
     tblHead2.commit();
     passData.forEach((rowData, index) => {
-      if (rowData.remark.newSlug) {
+      if (rowData.newSlug) {
         const ejectSlugRow = worksheet.addRow([
           '',
           '',
@@ -99,7 +99,7 @@ export class ReportGenerator {
           '',
           '',
           '',
-          `EJECTED SLUG #${rowData.remark.slugNo}`,
+          `EJECTED SLUG #${rowData.slugNo}`,
         ]);
         ejectSlugRow.eachCell((cell) => {
           cell.fill = CellStyle.fillYellow as ExcelJS.Fill;
@@ -113,7 +113,7 @@ export class ReportGenerator {
 
       if (
         standard === Standards.Louisiana &&
-        !rowData.remark.newSlug &&
+        !rowData.newSlug &&
         rowData.maxPeakDepth
       ) {
         const pumpedRow = worksheet.addRow([
@@ -146,7 +146,7 @@ export class ReportGenerator {
         '',
         rowData.logSpeed,
         rowData.maxPeakDepth,
-        rowData.remark.remark,
+        rowData.remark,
       ]);
       dataRow.eachCell((cell) => {
         cell.fill = CellStyle.fillWhite as ExcelJS.Fill;

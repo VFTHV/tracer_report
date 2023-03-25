@@ -9,8 +9,11 @@ const DisplayHeader: React.FC = () => {
   const headerData = useSelector((state: StoreState) => state.tracer.header);
 
   const handleHeaderChange = (field: keyof HeaderInfo, value: string) => {
-    dispatch(setHeader({ ...headerData, [field]: value }));
+    const newHeader = { ...headerData, [field]: value };
+    dispatch(setHeader(newHeader));
   };
+
+  // redo renderHeader using .map()
 
   const renderHeader = () => {
     return (

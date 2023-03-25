@@ -1,21 +1,19 @@
-import React from 'react';
+import React, { FC } from 'react';
 import DisplayHeader from './DisplayHeader';
 import DisplayTable from './DisplayTable';
 import { AllPassData } from '../logics/TracerProcessor';
-import { ReportGenerator } from '../logics/ReportGenerator';
+
 import TableHead from './TableHead';
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
-import { useForm } from '@formspree/react';
+// import { useForm } from '@formspree/react';
+import { StoreState } from '../store';
+import TracerReportButton from './TracerReportButton';
 
-const DisplayData: React.FC = () => {
-  const dispatch = useDispatch();
-
-  const { allPassData, header, fileName, standard } = useSelector(
-    ({ tracer: { allPassData, header, fileName, standard } }) => {
-      return { allPassData, header, fileName, standard };
-    }
+const DisplayData: FC = () => {
+  const { allPassData, header } = useSelector(
+    (state: StoreState) => state.tracer
   );
 
   const hasHeader = header.date;
@@ -26,7 +24,6 @@ const DisplayData: React.FC = () => {
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    ReportGenerator.tracerReport(allPassData, header, fileName, standard);
     // handleSubmit(e);
   };
 
@@ -35,7 +32,6 @@ const DisplayData: React.FC = () => {
   return (
     <form onSubmit={onSubmit}>
       {hasHeader ? <DisplayHeader /> : null}
-
       <textarea
         id="message"
         name="message"
@@ -49,14 +45,11 @@ const DisplayData: React.FC = () => {
 
         <tbody>
           {allPassData.map((pass: AllPassData, index: number) => (
-            <DisplayTable key={Math.random()} data={pass} index={index} />
+            <DisplayTable key={Math.random()} pass={pass} index={index} />
           ))}
         </tbody>
       </table>
-
-      <button type="submit" className="btn btn-success" disabled={!enabled}>
-        Create Spreadsheet
-      </button>
+      <TracerReportButton enabled={enabled} />
     </form>
   );
 };

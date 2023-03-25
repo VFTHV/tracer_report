@@ -1,22 +1,19 @@
 import { configureStore } from '@reduxjs/toolkit';
-import {
-  tracerReducer,
-  changeStandard,
-  changeFileName,
-  changeTotalDepth,
-  TracerState,
-} from './slices/tracerSlice';
+import { reportReducer, Reportable } from './slices/reportSlice';
+import { tracerReducer, TracerState } from './slices/tracerSlice';
 
 const store = configureStore({
   reducer: {
     tracer: tracerReducer,
+    report: reportReducer,
   },
 });
 
-// export { store, changeStandard, changeFileName, changeTotalDepth };
 export { store };
 export * from './slices/tracerSlice';
+export * from './slices/reportSlice';
 
 export interface StoreState {
   tracer: TracerState;
+  report: Reportable;
 }

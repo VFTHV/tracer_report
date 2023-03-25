@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { LasFileReader } from '../logics/LasFileReader';
 
-import { AllPassData } from '../logics/TracerProcessor';
-import { HeaderInfo } from '../logics/HeaderProcessor';
 import { Standards } from '../logics/Standards';
 import Instructions from './Instructions';
 
