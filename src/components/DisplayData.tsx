@@ -7,7 +7,7 @@ import TableHead from './TableHead';
 
 import { useSelector } from 'react-redux';
 
-// import { useForm } from '@formspree/react';
+import { useForm } from '@formspree/react';
 import { StoreState } from '../store';
 import TracerReportButton from './TracerReportButton';
 
@@ -20,11 +20,11 @@ const DisplayData: FC = () => {
   const hasData = allPassData.length;
   const enabled = Boolean(hasData) && Boolean(hasHeader);
 
-  // const [, handleSubmit] = useForm('mlekbvbd');
+  const [, handleSubmit] = useForm('mlekbvbd');
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // handleSubmit(e);
+    handleSubmit(e);
   };
 
   const headerAsText = Object.values(header).join('; ');

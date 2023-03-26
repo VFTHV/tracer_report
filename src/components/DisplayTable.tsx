@@ -24,8 +24,6 @@ const DisplayTable: FC<DisplayTableProps> = ({ pass, index }) => {
     remark,
   } = passData;
 
-  // console.log('re-render Display Table');
-
   const onChange = (e: ChangeEvent<HTMLInputElement>, key: string) => {
     const modifiedPass = { ...passData };
     const value =
