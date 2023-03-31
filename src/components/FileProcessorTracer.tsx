@@ -11,6 +11,7 @@ import {
   changeTotalDepth,
   setAllPassData,
   setHeader,
+  StoreState,
 } from '../store';
 import { useSelector } from 'react-redux';
 
@@ -19,13 +20,7 @@ function FileProcessorTracer() {
 
   const dispatch = useDispatch();
   const { fileName, standard, totalDepth } = useSelector(
-    ({ tracer: { fileName, standard, totalDepth } }) => {
-      return {
-        fileName,
-        standard,
-        totalDepth,
-      };
-    }
+    (state: StoreState) => state.tracer
   );
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {

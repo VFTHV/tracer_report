@@ -4,19 +4,24 @@ import { LasParser } from './LasParser';
 import { HeaderProcessor } from './HeaderProcessor';
 import { AllPassData } from './TracerProcessor';
 import { HeaderInfo } from './HeaderProcessor';
-import { ReportGenerator } from './ReportGenerator';
 
 export class LasFileReader {
+  // Tracer
   multiPassData: string[][][];
   passDataAndRemarks: AllPassData[];
   header: HeaderInfo;
 
+  // TTD
   singlePassData: string[][];
+  converted: {
+    data: number[][];
+    colHeader: string[];
+    header: string;
+  } = { data: [], colHeader: [], header: '' };
 
   constructor(
     public file: File,
-    public totalDepth?: number,
-    public fileName?: string
+    public totalDepth?: number // public fileName?: string
   ) {}
 
   async readTracer(): Promise<void> {
@@ -50,28 +55,29 @@ export class LasFileReader {
       fileReader.onloadend = () => {
         if (fileReader.result !== null) {
           this.singlePassData = LasParser.parseOnePass(fileReader.result);
-
-          const depthConvertedData = TimeToDepthProcessor.timeToDepthData(
+          const convertedData = TimeToDepthProcessor.timeToDepthData(
             this.singlePassData
-          );
-          const initalData = fileReader.result.toString();
-          const depthConvertedHeader = TimeToDepthProcessor.timeToDepthHeader(
-            initalData,
-            depthConvertedData
           );
 
           const convertedColHeader = TimeToDepthProcessor.convertColHeader(
             this.singlePassData
           );
 
-          ReportGenerator.timeToDepthReport(
-            depthConvertedData,
-            convertedColHeader,
-            depthConvertedHeader,
-            this.fileName
+          const initalData = fileReader.result.toString();
+          const convertedHeader = TimeToDepthProcessor.timeToDepthHeader(
+            initalData,
+            convertedData
           );
+          this.converted = {
+            data: convertedData,
+            colHeader: convertedColHeader,
+            header: convertedHeader,
+          };
+          console.log(this.converted);
 
           resolve();
+
+          console.log('resolved');
         } else {
           reject(new Error('File could not be read'));
         }
