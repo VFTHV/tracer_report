@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import FileProcessorTracer from '../components/FileProcessorTracer';
 import DisplayData from '../components/DisplayData';

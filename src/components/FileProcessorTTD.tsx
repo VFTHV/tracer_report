@@ -19,8 +19,7 @@ export default function FileProcessorTTD() {
     }
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const handleLasConvert = () => {
     if (!inputFile) {
       alert('Please select a file');
     } else {
@@ -33,9 +32,11 @@ export default function FileProcessorTTD() {
 
   const hasFile = Boolean(inputFile);
 
+  const isVisible = hasFile ? 'd-block' : 'd-none';
+
   return (
     <div className="bg-success text-light">
-      <form onSubmit={handleSubmit} className="p-3 font-weight-bold">
+      <form className="p-3 font-weight-bold">
         <h1>Free Time Stations To Depth .las Converting Tool</h1>
         <div className="row">
           <div className="col-12 col-sm-6 col-lg-3 my-2">
@@ -64,16 +65,20 @@ export default function FileProcessorTTD() {
               placeholder="Optional"
             />
           </div>
+          <div className={`col-12 col-sm-6 col-lg-3 my-2 ${isVisible}`}>
+            <label className="d-block">Step 3.</label>
+            <button
+              onClick={handleLasConvert}
+              type="button"
+              className="btn btn-outline-dark bg-light"
+              disabled={!hasFile}
+            >
+              Convert .LAS File
+            </button>
+          </div>
+          <TTDReportButton />
         </div>
-        <button
-          type="submit"
-          className="btn btn-outline-dark bg-light"
-          disabled={!hasFile}
-        >
-          Process File
-        </button>
       </form>
-      <TTDReportButton />
     </div>
   );
 }

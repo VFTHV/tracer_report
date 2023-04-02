@@ -5,9 +5,10 @@ import { StoreState } from '../store';
 
 interface TracerReportProps {
   enabled: boolean;
+  isVisible: string;
 }
 
-const TracerReportButton: FC<TracerReportProps> = ({ enabled }) => {
+const TracerReportButton: FC<TracerReportProps> = ({ enabled, isVisible }) => {
   const { reportablePasses, reportableHeader } = useSelector(
     (state: StoreState) => state.report
   );
@@ -27,7 +28,7 @@ const TracerReportButton: FC<TracerReportProps> = ({ enabled }) => {
   return (
     <button
       type="submit"
-      className="btn btn-success"
+      className={`btn btn-danger ${isVisible}`}
       disabled={!enabled}
       onClick={generateReport}
     >

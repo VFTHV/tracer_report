@@ -23,15 +23,20 @@ function TTDReportButton() {
   const enabled =
     depthConvertedData && convertedColHeader && depthConvertedHeader;
 
+  const isVisible = enabled ? 'd-block' : 'd-none';
+
   return (
-    <button
-      type="submit"
-      className="btn btn-success"
-      disabled={!enabled}
-      onClick={generateReport}
-    >
-      Convert Las File
-    </button>
+    <div className={`col-12 col-sm-6 col-lg-3 my-2 ${isVisible}`}>
+      <label className="d-block">Step 4.</label>
+      <button
+        type="submit"
+        className={`btn btn-danger`}
+        disabled={!enabled}
+        onClick={generateReport}
+      >
+        Download Converted File
+      </button>
+    </div>
   );
 }
 

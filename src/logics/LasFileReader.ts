@@ -19,10 +19,7 @@ export class LasFileReader {
     header: string;
   } = { data: [], colHeader: [], header: '' };
 
-  constructor(
-    public file: File,
-    public totalDepth?: number // public fileName?: string
-  ) {}
+  constructor(public file: File, public totalDepth?: number) {}
 
   async readTracer(): Promise<void> {
     return new Promise((resolve, reject) => {
@@ -73,11 +70,8 @@ export class LasFileReader {
             colHeader: convertedColHeader,
             header: convertedHeader,
           };
-          console.log(this.converted);
 
           resolve();
-
-          console.log('resolved');
         } else {
           reject(new Error('File could not be read'));
         }

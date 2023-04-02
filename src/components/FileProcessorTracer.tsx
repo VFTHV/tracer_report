@@ -29,8 +29,7 @@ function FileProcessorTracer() {
     }
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const handleFileProcess = () => {
     if (!inputFile) {
       alert('Please select a file');
     } else {
@@ -43,10 +42,11 @@ function FileProcessorTracer() {
   };
 
   const hasFile = Boolean(inputFile);
+  const isVisible = hasFile ? 'd-block' : 'd-none';
 
   return (
     <div className="bg-success text-light">
-      <form onSubmit={handleSubmit} className="p-3 font-weight-bold">
+      <form className="p-3 font-weight-bold">
         <h1>Free Radioactive Tracer Reporting Tool</h1>
         <div className="row">
           <div className="col-12 col-sm-6 col-lg-3 my-2">
@@ -109,15 +109,19 @@ function FileProcessorTracer() {
             </select>
           </div>
 
+          <div className={`col-12 col-sm-6 col-lg-3 my-2 ${isVisible}`}>
+            <label className="d-block">Step 5. Process File</label>
+            <button
+              onClick={handleFileProcess}
+              type="button"
+              className="btn btn-outline-dark bg-light"
+              disabled={!hasFile}
+            >
+              Process File
+            </button>
+          </div>
           <Instructions />
         </div>
-        <button
-          type="submit"
-          className="btn btn-outline-dark bg-light"
-          disabled={!hasFile}
-        >
-          Process File
-        </button>
       </form>
     </div>
   );

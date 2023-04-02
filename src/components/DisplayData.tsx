@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { useEffect, FormEvent } from 'react';
 import DisplayHeader from './DisplayHeader';
 import DisplayTable from './DisplayTable';
 import { AllPassData } from '../logics/TracerProcessor';
@@ -11,20 +11,26 @@ import { useForm } from '@formspree/react';
 import { StoreState } from '../store';
 import TracerReportButton from './TracerReportButton';
 
-const DisplayData: FC = () => {
+const DisplayData = () => {
   const { allPassData, header } = useSelector(
     (state: StoreState) => state.tracer
   );
+
+  useEffect(() => {
+    window.scrollTo(0, document.body.scrollHeight);
+  }, [allPassData]);
 
   const hasHeader = header.date;
   const hasData = allPassData.length;
   const enabled = Boolean(hasData) && Boolean(hasHeader);
 
-  const [, handleSubmit] = useForm('mlekbvbd');
+  const isVisible = enabled ? 'd-block' : 'd-none';
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  // const [, handleSubmit] = useForm('mlekbvbd');
+
+  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    handleSubmit(e);
+    // handleSubmit(e);
   };
 
   const headerAsText = Object.values(header).join('; ');
@@ -49,7 +55,7 @@ const DisplayData: FC = () => {
           ))}
         </tbody>
       </table>
-      <TracerReportButton enabled={enabled} />
+      <TracerReportButton enabled={enabled} isVisible={isVisible} />
     </form>
   );
 };
