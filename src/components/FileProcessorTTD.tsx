@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { FormEvent, useState } from 'react';
 import { LasFileReader } from '../logics/LasFileReader';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeTtdFileName, setData, StoreState } from '../store';
@@ -19,7 +19,9 @@ export default function FileProcessorTTD() {
     }
   };
 
-  const handleLasConvert = () => {
+  const handleLasConvert = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
     if (!inputFile) {
       alert('Please select a file');
     } else {
@@ -35,8 +37,8 @@ export default function FileProcessorTTD() {
   const isVisible = hasFile ? 'd-block' : 'd-none';
 
   return (
-    <div className="bg-success text-light">
-      <form className="p-3 font-weight-bold">
+    <div className="bg-success text-light p-3">
+      <form className="font-weight-bold" onSubmit={handleLasConvert}>
         <h1>Free Time Stations To Depth .las Converting Tool</h1>
         <div className="row">
           <div className="col-12 col-sm-6 col-lg-3 my-2">
@@ -68,17 +70,16 @@ export default function FileProcessorTTD() {
           <div className={`col-12 col-sm-6 col-lg-3 my-2 ${isVisible}`}>
             <label className="d-block">Step 3.</label>
             <button
-              onClick={handleLasConvert}
-              type="button"
+              type="submit"
               className="btn btn-outline-dark bg-light"
               disabled={!hasFile}
             >
               Convert .LAS File
             </button>
           </div>
-          <TTDReportButton />
         </div>
       </form>
+      <TTDReportButton />
     </div>
   );
 }
