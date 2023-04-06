@@ -26,6 +26,16 @@ export default function NavBar() {
               Time To Depth
             </NavLink>
           </li>
+          <li className="nav-item">
+            <NavLink
+              to="/curve-spike"
+              className={({ isActive }) =>
+                (isActive ? 'active' : '') + ' nav-link'
+              }
+            >
+              Curve Spike
+            </NavLink>
+          </li>
         </ul>
       </nav>
     </header>

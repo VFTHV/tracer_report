@@ -16,7 +16,11 @@ export class DataProcessor {
     return data;
   }
 
-  static getCurve(data: string[][], crvName: string, nullVal?: number) {
+  static getCurve(
+    data: string[][],
+    crvName: string,
+    nullVal?: number
+  ): string[] {
     const crvHeadIndex: number = data.findIndex((arr: string[]) =>
       arr.includes('~A')
     );

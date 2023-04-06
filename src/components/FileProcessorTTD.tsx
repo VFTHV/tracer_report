@@ -1,4 +1,4 @@
-import React, { FormEvent, useState } from 'react';
+import React, { FormEvent, useState, ChangeEvent } from 'react';
 import { LasFileReader } from '../logics/LasFileReader';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeTtdFileName, setData, StoreState } from '../store';
@@ -13,7 +13,7 @@ export default function FileProcessorTTD() {
   // const [step, setStep] = useState(0);
   // const [resampleDisabled, setResampleDisabled] = useState(true);
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
       setInputFile(event.target.files[0]);
     }
