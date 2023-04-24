@@ -33,7 +33,7 @@ function FileProcessorTracer() {
     if (!inputFile) {
       alert('Please select a file');
     } else {
-      const reader = new LasFileReader(inputFile, totalDepth);
+      const reader = new LasFileReader(inputFile, totalDepth, standard);
       reader.readTracer().then(() => {
         dispatch(setAllPassData(reader.passDataAndRemarks));
         dispatch(setHeader(reader.header));

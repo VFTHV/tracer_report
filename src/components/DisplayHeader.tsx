@@ -1,15 +1,16 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setHeader, StoreState } from '../store';
+import { Standards } from '../logics/Standards';
 
 import { HeaderInfo } from '../logics/HeaderProcessor';
 
 const DisplayHeader: React.FC = () => {
   const dispatch = useDispatch();
-  const headerData = useSelector((state: StoreState) => state.tracer.header);
+  const { header, standard } = useSelector((state: StoreState) => state.tracer);
 
   const handleHeaderChange = (field: keyof HeaderInfo, value: string) => {
-    const newHeader = { ...headerData, [field]: value };
+    const newHeader = { ...header, [field]: value };
     dispatch(setHeader(newHeader));
   };
 
@@ -29,7 +30,7 @@ const DisplayHeader: React.FC = () => {
                   <input
                     className="col p-0 border-0 text-center bg-transparent"
                     type="text"
-                    value={headerData.date}
+                    value={header.date}
                     onChange={(e) => handleHeaderChange('date', e.target.value)}
                   />
                 </td>
@@ -43,7 +44,7 @@ const DisplayHeader: React.FC = () => {
                   <input
                     className="col p-0 border-0 text-center bg-transparent"
                     type="text"
-                    value={headerData.company}
+                    value={header.company}
                     onChange={(e) =>
                       handleHeaderChange('company', e.target.value)
                     }
@@ -59,7 +60,7 @@ const DisplayHeader: React.FC = () => {
                   <input
                     className="col p-0 border-0 text-center bg-transparent"
                     type="text"
-                    value={headerData.well}
+                    value={header.well}
                     onChange={(e) => handleHeaderChange('well', e.target.value)}
                   />
                 </td>
@@ -73,7 +74,7 @@ const DisplayHeader: React.FC = () => {
                   <input
                     className="col p-0 border-0 text-center bg-transparent"
                     type="text"
-                    value={headerData.field}
+                    value={header.field}
                     onChange={(e) =>
                       handleHeaderChange('field', e.target.value)
                     }
@@ -83,13 +84,13 @@ const DisplayHeader: React.FC = () => {
 
               <tr>
                 <th scope="row" className="text-nowrap py-0">
-                  Location:
+                  Shop Location:
                 </th>
                 <td className="p-0">
                   <input
                     className="col p-0 border-0 text-center bg-transparent"
                     type="text"
-                    value={headerData.location}
+                    value={header.location}
                     onChange={(e) =>
                       handleHeaderChange('location', e.target.value)
                     }
@@ -99,13 +100,13 @@ const DisplayHeader: React.FC = () => {
 
               <tr>
                 <th scope="row" className="text-nowrap py-0">
-                  County:
+                  {standard === Standards.Texas ? 'County:' : 'Parish:'}
                 </th>
                 <td className="p-0">
                   <input
                     className="col p-0 border-0 text-center bg-transparent"
                     type="text"
-                    value={headerData.county}
+                    value={header.county}
                     onChange={(e) =>
                       handleHeaderChange('county', e.target.value)
                     }
@@ -121,7 +122,7 @@ const DisplayHeader: React.FC = () => {
                   <input
                     className="col p-0 border-0 text-center bg-transparent"
                     type="text"
-                    value={headerData.state}
+                    value={header.state}
                     onChange={(e) =>
                       handleHeaderChange('state', e.target.value)
                     }

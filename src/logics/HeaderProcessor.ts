@@ -1,9 +1,12 @@
+import { Standards } from './Standards';
+
 export interface HeaderInfo {
   date: string;
   company: string;
   well: string;
   field: string;
   county?: string;
+  parish?: string;
   state: string;
   location?: string;
 }
@@ -32,7 +35,7 @@ export class HeaderProcessor {
     return detail;
   };
 
-  static headerInfo(data: string[][][]): HeaderInfo {
+  static headerInfo(data: string[][][], standard?: string): HeaderInfo {
     const header = HeaderProcessor.getHeader(data);
 
     // const headerInfo: HeaderInfo = {}
@@ -55,16 +58,21 @@ export class HeaderProcessor {
     if (month && day && year) {
       date = `${day}-${month}-${year}`;
     }
+    let countyOrParish: string = 'county';
+    if (standard) {
+      countyOrParish = standard === Standards.Texas ? 'county' : 'parish';
+    }
 
     const headerInfo = {
       date,
       company,
       well,
       field,
-      county,
       state,
-      location,
+      ['shop location']: location,
+      [countyOrParish]: county,
     };
+
     return headerInfo;
   }
 }

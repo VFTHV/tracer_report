@@ -19,7 +19,11 @@ export class LasFileReader {
     header: string;
   } = { data: [], colHeader: [], header: '' };
 
-  constructor(public file: File, public totalDepth?: number) {}
+  constructor(
+    public file: File,
+    public totalDepth?: number,
+    public standard?: string
+  ) {}
 
   async readTracer(): Promise<void> {
     return new Promise((resolve, reject) => {
@@ -35,7 +39,10 @@ export class LasFileReader {
             this.totalDepth
           );
 
-          this.header = HeaderProcessor.headerInfo(this.multiPassData);
+          this.header = HeaderProcessor.headerInfo(
+            this.multiPassData,
+            this.standard
+          );
           resolve();
         } else {
           reject(new Error('File could not be read'));
