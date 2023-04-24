@@ -24,7 +24,9 @@ export class DataProcessor {
     const crvHeadIndex: number = data.findIndex((arr: string[]) =>
       arr.includes('~A')
     );
-    const crvHead: string[] = data[crvHeadIndex];
+    const crvHead: string[] = data[crvHeadIndex].map((crv) =>
+      crv.toUpperCase()
+    );
     const crvIndex: number = crvHead.lastIndexOf(crvName) - 1;
     // filter out curve column into it's array
     const curve: string[] = data
@@ -41,5 +43,23 @@ export class DataProcessor {
       return strippedCurve;
     }
     return curve;
+  }
+
+  correctSpike(
+    data: string[][],
+    offPercent: number,
+    crvName: string,
+    depthCrvName: string
+  ): string[][] {
+    // get curve from file
+    // __ account for nullVallue
+
+    // correct the curve
+    // __ use math to correct the curve
+
+    // insert the curve back
+    //
+
+    return [];
   }
 }

@@ -23,6 +23,9 @@ function FileProcessorSpike() {
     (state: StoreState) => state.spike
   );
 
+  const hasFile = Boolean(inputFile);
+  const isVisible = !hasFile && 'd-none';
+
   const handleShowLog = (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -55,7 +58,7 @@ function FileProcessorSpike() {
           </div>
           <div className="col-12 col-sm-6 col-lg-3 my-2">
             <label className="mr-2" htmlFor="output-file">
-              Step 2. Curve to Correct:
+              Step 2. Curve to Correct*:
             </label>
             <input
               className="form-control"
@@ -69,7 +72,7 @@ function FileProcessorSpike() {
           </div>
           <div className="col-12 col-sm-6 col-lg-3 my-2">
             <label className="mr-2" htmlFor="output-file">
-              Step 3. Depth Curve Name:
+              Step 3. Depth Curve Name*:
             </label>
             <input
               className="form-control"
@@ -81,12 +84,12 @@ function FileProcessorSpike() {
               placeholder="ADPTH"
             />
           </div>
-          <div className={`col-12 col-sm-6 col-lg-3 my-2`}>
+          <div className={`col-12 col-sm-6 col-lg-3 my-2 ${isVisible}`}>
             <label className="d-block">Step 3.</label>
             <button
               type="submit"
               className="btn btn-outline-dark bg-light"
-              // disabled={!hasFile}
+              disabled={!hasFile}
             >
               Show Log
             </button>
