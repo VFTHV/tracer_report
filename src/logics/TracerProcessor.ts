@@ -126,9 +126,8 @@ export class TracerProcessor extends DataProcessor {
       ];
 
       const secondsToTime = (seconds: string): string => {
-        const secondsNum = parseFloat(seconds);
-        const hours = Math.floor(secondsNum / 3600);
-        const minutes = Math.round((secondsNum % 3600) / 60);
+        const hours = Math.floor(+seconds / 3600);
+        const minutes = Math.floor((+seconds % 3600) / 60);
         const formattedHrs = hours.toString().padStart(2, '0');
         const formattedMins = minutes.toString().padStart(2, '0');
 
@@ -227,7 +226,7 @@ export class TracerProcessor extends DataProcessor {
         newSlug = false;
 
         if (
-          arr[index + 1].maxPeakValue > 2 * (rowData.maxPeakValue as number) &&
+          +arr[index + 1].maxPeakValue > 2 * +rowData.maxPeakValue &&
           arr[index + 1].maxPeakDepth < rowData.maxPeakDepth
         ) {
           slugPassNo = 1;
