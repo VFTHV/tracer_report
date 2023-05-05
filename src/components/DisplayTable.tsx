@@ -114,8 +114,8 @@ const DisplayTable: FC<DisplayTableProps> = ({ pass, index }) => {
       <td className="p-0">
         <input
           className="col p-0 border-0 text-center bg-transparent"
-          type="number"
-          value={maxPeakDepth || ''}
+          type="text"
+          value={maxPeakDepth}
           onChange={(e) => onChange(e, 'maxPeakDepth')}
         />
       </td>

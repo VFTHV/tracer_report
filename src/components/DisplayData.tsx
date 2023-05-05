@@ -30,8 +30,7 @@ const DisplayData = () => {
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(e);
-    handleSubmit(e);
+    // handleSubmit(e);
   };
 
   const headerAsText = Object.values(header).join('; ');

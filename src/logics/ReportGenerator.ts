@@ -19,13 +19,14 @@ export class ReportGenerator {
 
     ReportGenerator.createHeader(worksheet, headerData);
     ReportGenerator.createTable(worksheet, passData, standard);
-    ReportGenerator.toXlsx(worksheet, workbook, filename);
+    ReportGenerator.toXlsx(worksheet, workbook, filename, headerData);
   }
 
   static toXlsx(
     worksheet: ExcelJS.Worksheet,
     workbook: ExcelJS.Workbook,
-    fileName: string
+    fileName: string,
+    headerData: HeaderInfo
   ): void {
     const rowCnt = worksheet.rowCount;
     worksheet.getRow(rowCnt + 10).addPageBreak();
@@ -41,7 +42,9 @@ export class ReportGenerator {
       // Create link element for downloading the blob object
       const link = document.createElement('a');
       link.href = window.URL.createObjectURL(blob);
-      link.download = `${fileName ? fileName : 'report'}.xlsx`;
+      link.download = fileName
+        ? fileName
+        : `RAT_Summary_${headerData.well}.xlsx`;
       link.click();
     });
   }
@@ -91,7 +94,7 @@ export class ReportGenerator {
       if (rowData.newSlug) {
         const ejectSlugRow = worksheet.addRow([
           '',
-          '',
+          'XXX',
           '',
           '',
           '',
@@ -162,7 +165,7 @@ export class ReportGenerator {
     worksheet: ExcelJS.Worksheet,
     headerData: HeaderInfo
   ): void {
-    const columnWidths = [5, 8, 8, 8, 8, 8, 8, 9, 10, 16];
+    const columnWidths = [5, 8, 8, 8, 8, 7, 7, 9, 12, 16];
 
     columnWidths.forEach((colWidth, i) => {
       worksheet.getColumn(i + 1).width = colWidth;

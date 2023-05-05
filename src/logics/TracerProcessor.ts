@@ -1,3 +1,4 @@
+import { removeAllListeners } from 'process';
 import { DataProcessor } from './DataProcessor';
 
 export interface AllPassData {
@@ -30,6 +31,8 @@ export interface RemarkInfo {
   newSlug: boolean;
   remark: string;
   slugNo: number;
+  dissipating?: boolean;
+  slugPassNo?: number;
 }
 
 export class TracerProcessor extends DataProcessor {
@@ -43,15 +46,19 @@ export class TracerProcessor extends DataProcessor {
     const remarks = TracerProcessor.createRemarks(passData);
 
     const combinedData = passData.map((pass, i): AllPassData => {
+      if (remarks[i].dissipating)
+        pass = { ...pass, maxPeakDepth: 'DISSIPATING' };
+
       return { ...pass, ...remarks[i] };
     });
+
     return combinedData;
   }
 
   static extractPassData(data: string[][][], totalDepth?: number): PassInfo[] {
     const nullValue = -999.25;
 
-    return data.map((log: string[][], runIndex: number): PassInfo => {
+    let passesInfo = data.map((log: string[][], runIndex: number): PassInfo => {
       const isDepthDriven: boolean = log.some((subarr: string[]) =>
         subarr.includes('DEPT.FT')
       );
@@ -155,6 +162,7 @@ export class TracerProcessor extends DataProcessor {
       };
       return passInfo;
     });
+    return passesInfo;
   }
 
   static createRemarks(passData: PassInfo[]): RemarkInfo[] {
@@ -165,12 +173,16 @@ export class TracerProcessor extends DataProcessor {
     // if item is not first, not last, has peak -->  Pass 1
     // if slug peak slug value decreases --> increase Pass number +1
     // if slug peak value increases --> add yellow slug line --> Pass1
+    // finding last pass and adding 'dissipating' boolean to it
+
     let remarks: RemarkInfo[] = [];
     let newSlug: boolean = false;
     let slugPassNo = 1;
     let slugNo = 1;
     let statCheckNo = 1;
     let timeDriveNo = 1;
+
+    let passesInSlugs: { passes: number; slugNumber: number }[] = [];
 
     passData.forEach((rowData, index, arr) => {
       const timeToHours = (time: string): number => {
@@ -221,7 +233,13 @@ export class TracerProcessor extends DataProcessor {
           remark: `PASS # ${slugPassNo}`,
           newSlug,
           slugNo,
+          slugPassNo,
         });
+        // determining number of passes to find last pass as dissipating
+        passesInSlugs[slugNo - 1] = {
+          slugNumber: slugNo,
+          ['passes']: slugPassNo,
+        };
         slugPassNo++;
         newSlug = false;
 
@@ -234,6 +252,25 @@ export class TracerProcessor extends DataProcessor {
         }
       }
     });
+
+    remarks = remarks.map((remarkData: RemarkInfo): RemarkInfo => {
+      const { remark, newSlug, slugNo, slugPassNo } = remarkData;
+
+      const isLastPass = passesInSlugs.some(
+        ({ slugNumber, passes }) =>
+          slugNumber === slugNo && passes === slugPassNo
+      );
+
+      const trimmedRemark: RemarkInfo = {
+        remark,
+        newSlug,
+        slugNo,
+      };
+
+      if (!isLastPass) return trimmedRemark;
+      return { ...trimmedRemark, dissipating: true };
+    });
+
     return remarks;
   }
 }
