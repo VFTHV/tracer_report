@@ -32,15 +32,17 @@ export class LasFileReader {
 
       fileReader.onloadend = () => {
         if (fileReader.result !== null) {
-          this.multiPassData = LasParser.parseMultiplePasses(fileReader.result);
+          const multiPassData = LasParser.parseMultiplePasses(
+            fileReader.result
+          );
 
-          this.passDataAndRemarks = TracerProcessor.getAllPassData(
-            this.multiPassData,
+          this.passDataAndRemarks = TracerProcessor.combineRemarksAndData(
+            multiPassData,
             this.totalDepth
           );
 
           this.header = HeaderProcessor.headerInfo(
-            this.multiPassData,
+            multiPassData,
             this.standard
           );
           resolve();

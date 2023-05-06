@@ -1,4 +1,3 @@
-import { removeAllListeners } from 'process';
 import { DataProcessor } from './DataProcessor';
 
 export interface AllPassData {
@@ -36,7 +35,7 @@ export interface RemarkInfo {
 }
 
 export class TracerProcessor extends DataProcessor {
-  static getAllPassData(
+  static combineRemarksAndData(
     data: string[][][],
     totalDepth?: number
   ): AllPassData[] {
@@ -197,44 +196,34 @@ export class TracerProcessor extends DataProcessor {
 
       // creating remarks
 
+      let currentRemark: RemarkInfo = { remark: '', newSlug, slugNo };
+
       if (index === 0) {
-        remarks.push({
-          remark: 'PRE-BASE LOG',
-          newSlug,
-          slugNo,
-        });
+        currentRemark.remark = 'PRE-BASE LOG';
+        remarks.push(currentRemark);
       } else if (index === arr.length - 1) {
-        remarks.push({
-          remark: 'POST-BASE LOG',
-          newSlug,
-          slugNo,
-        });
+        currentRemark.remark = 'POST-BASE LOG';
+        remarks.push(currentRemark);
       } else if (!Number(rowData.logSpeed)) {
         if (passDuration < 15) {
-          remarks.push({
-            remark: `STAT CHECK #${statCheckNo}`,
-            newSlug,
-            slugNo,
-          });
+          currentRemark.remark = `STAT CHECK #${statCheckNo}`;
+          remarks.push(currentRemark);
           statCheckNo++;
         } else {
-          remarks.push({
-            remark: `TIME DRIVE #${timeDriveNo}`,
-            newSlug,
-            slugNo,
-          });
+          currentRemark.remark = `TIME DRIVE #${timeDriveNo}`;
+          remarks.push(currentRemark);
           timeDriveNo++;
         }
       } else if (index !== 0 && index !== arr.length - 1) {
         if (slugPassNo === 1) {
           newSlug = true;
         }
-        remarks.push({
+        currentRemark = {
+          ...currentRemark,
           remark: `PASS # ${slugPassNo}`,
-          newSlug,
-          slugNo,
           slugPassNo,
-        });
+        };
+        remarks.push(currentRemark);
         // determining number of passes to find last pass as dissipating
         passesInSlugs[slugNo - 1] = {
           slugNumber: slugNo,
