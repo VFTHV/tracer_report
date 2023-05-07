@@ -9,19 +9,20 @@ interface TracerReportProps {
 }
 
 const TracerReportButton: FC<TracerReportProps> = ({ enabled, isVisible }) => {
-  const { reportablePasses, reportableHeader } = useSelector(
-    (state: StoreState) => state.report
-  );
-  const { fileName, standard } = useSelector(
-    (state: StoreState) => state.tracer
-  );
+  const { reportablePasses, reportableHeader, fileName, standard, logo } =
+    useSelector((state: StoreState) => {
+      const { reportablePasses, reportableHeader, logo } = state.report;
+      const { fileName, standard } = state.tracer;
+      return { reportablePasses, reportableHeader, fileName, standard, logo };
+    });
 
   const generateReport = () => {
     ReportGenerator.tracerReport(
       reportablePasses,
       reportableHeader,
       fileName,
-      standard
+      standard,
+      logo
     );
   };
 

@@ -12,7 +12,6 @@ export class DataProcessor {
 
       return minTodA - minTodB;
     });
-
     return data;
   }
 

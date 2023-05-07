@@ -1,4 +1,4 @@
-import ExcelJS from 'exceljs';
+import { Workbook, Worksheet, Alignment, Borders, Fill } from 'exceljs';
 import { AllPassData } from './TracerProcessor';
 import { HeaderInfo } from './HeaderProcessor';
 import { Standards } from './Standards';
@@ -10,21 +10,31 @@ export class ReportGenerator {
     passData: AllPassData[],
     headerData: HeaderInfo,
     filename: string,
-    standard: string
+    standard: string,
+    logo?: string
   ): void {
-    const workbook = new ExcelJS.Workbook();
+    const workbook = new Workbook();
     const worksheet = workbook.addWorksheet('Sheet 1', {
       pageSetup: { fitToPage: true, fitToWidth: 1 },
     });
 
     ReportGenerator.createHeader(worksheet, headerData);
     ReportGenerator.createTable(worksheet, passData, standard);
+    if (logo) ReportGenerator.addLogo(worksheet, workbook, logo);
     ReportGenerator.toXlsx(worksheet, workbook, filename, headerData);
   }
 
+  static addLogo(worksheet: Worksheet, workbook: Workbook, logo: string): void {
+    const imageId = workbook.addImage({
+      base64: logo,
+      extension: 'jpeg',
+    });
+    worksheet.addImage(imageId, 'I3:J5');
+  }
+
   static toXlsx(
-    worksheet: ExcelJS.Worksheet,
-    workbook: ExcelJS.Workbook,
+    worksheet: Worksheet,
+    workbook: Workbook,
     fileName: string,
     headerData: HeaderInfo
   ): void {
@@ -50,7 +60,7 @@ export class ReportGenerator {
   }
 
   static createTable(
-    worksheet: ExcelJS.Worksheet,
+    worksheet: Worksheet,
     passData: AllPassData[],
     standard: string
   ): void {
@@ -68,10 +78,10 @@ export class ReportGenerator {
       'REMARKS',
     ]);
 
-    tblHead1.alignment = CellStyle.alignCenter as Partial<ExcelJS.Alignment>;
+    tblHead1.alignment = CellStyle.alignCenter as Partial<Alignment>;
 
     tblHead1.eachCell((cell) => {
-      cell.border = CellStyle.borderThin as Partial<ExcelJS.Borders>;
+      cell.border = CellStyle.borderThin as Partial<Borders>;
       cell.font = { bold: true };
     });
 
@@ -105,9 +115,9 @@ export class ReportGenerator {
           `EJECTED SLUG #${rowData.slugNo}`,
         ]);
         ejectSlugRow.eachCell((cell) => {
-          cell.fill = CellStyle.fillYellow as ExcelJS.Fill;
-          cell.border = CellStyle.borderThin as Partial<ExcelJS.Borders>;
-          cell.alignment = CellStyle.alignCenter as Partial<ExcelJS.Alignment>;
+          cell.fill = CellStyle.fillYellow as Fill;
+          cell.border = CellStyle.borderThin as Partial<Borders>;
+          cell.alignment = CellStyle.alignCenter as Partial<Alignment>;
           cell.font = { bold: true };
         });
 
@@ -132,8 +142,8 @@ export class ReportGenerator {
           'PUMPED',
         ]);
         pumpedRow.eachCell((cell) => {
-          cell.border = CellStyle.borderThin as Partial<ExcelJS.Borders>;
-          cell.alignment = CellStyle.alignCenter as Partial<ExcelJS.Alignment>;
+          cell.border = CellStyle.borderThin as Partial<Borders>;
+          cell.alignment = CellStyle.alignCenter as Partial<Alignment>;
           cell.font = { bold: true, color: { argb: 'FF0000' } };
         });
         pumpedRow.commit();
@@ -152,20 +162,17 @@ export class ReportGenerator {
         rowData.remark,
       ]);
       dataRow.eachCell((cell) => {
-        cell.fill = CellStyle.fillWhite as ExcelJS.Fill;
-        cell.border = CellStyle.borderThin as Partial<ExcelJS.Borders>;
-        cell.alignment = CellStyle.alignCenter as Partial<ExcelJS.Alignment>;
+        cell.fill = CellStyle.fillWhite as Fill;
+        cell.border = CellStyle.borderThin as Partial<Borders>;
+        cell.alignment = CellStyle.alignCenter as Partial<Alignment>;
         cell.font = { bold: false };
       });
       dataRow.commit();
     });
   }
 
-  static createHeader(
-    worksheet: ExcelJS.Worksheet,
-    headerData: HeaderInfo
-  ): void {
-    const columnWidths = [5, 8, 8, 8, 8, 7, 7, 9, 12, 16];
+  static createHeader(worksheet: Worksheet, headerData: HeaderInfo): void {
+    const columnWidths = [5, 8, 8, 8, 8, 8, 7, 9, 12, 16];
 
     columnWidths.forEach((colWidth, i) => {
       worksheet.getColumn(i + 1).width = colWidth;
@@ -188,22 +195,23 @@ export class ReportGenerator {
     // adding header
     const headerKeys = Object.keys(headerData);
 
-    headerKeys.forEach((key) => {
+    headerKeys.forEach((key): void => {
       const newRow = worksheet.addRow([
-        '',
+        ,
+        ,
         `${key.toUpperCase()}:`,
-        '',
-        '',
+        ,
+        ,
         (headerData as any)[key],
       ]);
-      worksheet.mergeCells(`B${worksheet.rowCount}:D${worksheet.rowCount}`);
-      worksheet.mergeCells(`E${worksheet.rowCount}:G${worksheet.rowCount}`);
+      // worksheet.mergeCells(`B${worksheet.rowCount}:D${worksheet.rowCount}`);
+      // worksheet.mergeCells(`E${worksheet.rowCount}:G${worksheet.rowCount}`);
       newRow.eachCell((cell) => (cell.font = { bold: true }));
       newRow.commit();
     });
 
-    worksheet.addRow(['', 'LOGGING ENGINEER:'], 'i').commit();
-    worksheet.addRow(['', 'WELL CONNECTION:'], 'i').commit();
+    worksheet.addRow([, , 'LOGGING ENGINEER:'], 'i').commit();
+    worksheet.addRow([, , 'WELL CONNECTION:'], 'i').commit();
     worksheet.addRow([]).commit();
   }
 

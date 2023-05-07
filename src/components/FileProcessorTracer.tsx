@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, ChangeEvent } from 'react';
 import { LasFileReader } from '../logics/LasFileReader';
 
 import { Standards } from '../logics/Standards';
@@ -12,6 +12,7 @@ import {
   setAllPassData,
   setHeader,
   StoreState,
+  setLogo,
 } from '../store';
 import { useSelector } from 'react-redux';
 
@@ -23,9 +24,19 @@ function FileProcessorTracer() {
     (state: StoreState) => state.tracer
   );
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files) {
-      setInputFile(event.target.files[0]);
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      setInputFile(e.target.files[0]);
+    }
+  };
+
+  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const reader = new FileReader();
+      reader.readAsDataURL(e.target.files[0]);
+      reader.onloadend = () => {
+        dispatch(setLogo(reader.result));
+      };
     }
   };
 
@@ -120,6 +131,20 @@ function FileProcessorTracer() {
               Process File
             </button>
           </div>
+
+          <div className="col-12 col-sm-6 col-lg-3 my-2">
+            <label htmlFor="image-file" className="mr-2">
+              Step 6. Add Logo (Optional)
+            </label>
+            <input
+              id="image-file"
+              name="image-file"
+              type="file"
+              onChange={handleImageChange}
+              accept=".jpeg, .png"
+            />
+          </div>
+
           <Instructions />
         </div>
       </form>

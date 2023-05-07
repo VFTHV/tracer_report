@@ -7,12 +7,10 @@ import { HeaderInfo } from './HeaderProcessor';
 
 export class LasFileReader {
   // Tracer
-  multiPassData: string[][][];
   passDataAndRemarks: AllPassData[];
   header: HeaderInfo;
 
   // TTD
-  singlePassData: string[][];
   converted: {
     data: number[][];
     colHeader: string[];
@@ -60,14 +58,12 @@ export class LasFileReader {
 
       fileReader.onloadend = () => {
         if (fileReader.result !== null) {
-          this.singlePassData = LasParser.parseOnePass(fileReader.result);
-          const convertedData = TimeToDepthProcessor.timeToDepthData(
-            this.singlePassData
-          );
+          const singlePassData = LasParser.parseOnePass(fileReader.result);
+          const convertedData =
+            TimeToDepthProcessor.timeToDepthData(singlePassData);
 
-          const convertedColHeader = TimeToDepthProcessor.convertColHeader(
-            this.singlePassData
-          );
+          const convertedColHeader =
+            TimeToDepthProcessor.convertColHeader(singlePassData);
 
           const initalData = fileReader.result.toString();
           const convertedHeader = TimeToDepthProcessor.timeToDepthHeader(

@@ -6,6 +6,7 @@ import { setAllPassData, setHeader } from './tracerSlice';
 export interface Reportable {
   reportablePasses: AllPassData[];
   reportableHeader: HeaderInfo;
+  logo?: string;
 }
 
 const initialState: Reportable = {
@@ -19,6 +20,7 @@ const initialState: Reportable = {
     location: '',
     county: '',
   },
+  logo: '',
 };
 
 const reportSlice = createSlice({
@@ -34,6 +36,9 @@ const reportSlice = createSlice({
       newAllPassData[index] = modifiedPass;
       state.reportablePasses = newAllPassData;
     },
+    setLogo(state, action) {
+      state.logo = action.payload;
+    },
   },
   extraReducers(builder) {
     builder.addCase(
@@ -48,5 +53,5 @@ const reportSlice = createSlice({
   },
 });
 
-export const { modifyReportablePass } = reportSlice.actions;
+export const { modifyReportablePass, setLogo } = reportSlice.actions;
 export const reportReducer = reportSlice.reducer;
