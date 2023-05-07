@@ -26,8 +26,9 @@ const initialState: TracerState = {
     well: '',
     field: '',
     state: '',
-    location: '',
+    district: '',
     county: '',
+    parish: '',
   },
 };
 
@@ -47,8 +48,8 @@ const tracerSlice = createSlice({
     setAllPassData(state, action) {
       state.allPassData = action.payload;
     },
-    setHeader(state, action) {
-      state.header = action.payload;
+    setHeader(state, action: { payload: HeaderInfo }) {
+      state.header = { ...state.header, ...action.payload };
     },
   },
 });

@@ -8,7 +8,7 @@ export interface HeaderInfo {
   county?: string;
   parish?: string;
   state: string;
-  location?: string;
+  district: string;
 }
 
 export class HeaderProcessor {
@@ -29,7 +29,12 @@ export class HeaderProcessor {
     let detail: string = '';
     header.forEach((item: string): void => {
       if (item.startsWith(detailName)) {
-        detail = item.split(':')[0].split('.')[1].trim();
+        detail = item
+          .split(':')[0]
+          .split('.')
+          .map((x) => x.trim())
+          .splice(1, 99)
+          .join(' ');
       }
     });
     return detail;
@@ -46,7 +51,7 @@ export class HeaderProcessor {
       ? HeaderProcessor.getDetail(header, 'CNTY')
       : '';
     const state: string = HeaderProcessor.getDetail(header, 'STAT');
-    const location: string = HeaderProcessor.getDetail(header, 'LOC')
+    const district: string = HeaderProcessor.getDetail(header, 'LOC')
       ? HeaderProcessor.getDetail(header, 'LOC')
       : '';
 
@@ -69,7 +74,7 @@ export class HeaderProcessor {
       well,
       field,
       state,
-      ['shop location']: location,
+      district,
       [countyOrParish]: county,
     };
 

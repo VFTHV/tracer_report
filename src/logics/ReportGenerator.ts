@@ -14,11 +14,11 @@ export class ReportGenerator {
     logo?: string
   ): void {
     const workbook = new Workbook();
-    const worksheet = workbook.addWorksheet('Sheet 1', {
+    const worksheet = workbook.addWorksheet('RAT_Summary', {
       pageSetup: { fitToPage: true, fitToWidth: 1 },
     });
 
-    ReportGenerator.createHeader(worksheet, headerData);
+    ReportGenerator.createHeader(worksheet, headerData, standard);
     ReportGenerator.createTable(worksheet, passData, standard);
     if (logo) ReportGenerator.addLogo(worksheet, workbook, logo);
     ReportGenerator.toXlsx(worksheet, workbook, filename, headerData);
@@ -171,7 +171,11 @@ export class ReportGenerator {
     });
   }
 
-  static createHeader(worksheet: Worksheet, headerData: HeaderInfo): void {
+  static createHeader(
+    worksheet: Worksheet,
+    headerData: HeaderInfo,
+    standard: string
+  ): void {
     const columnWidths = [5, 8, 8, 8, 8, 8, 7, 9, 12, 16];
 
     columnWidths.forEach((colWidth, i) => {
@@ -204,8 +208,7 @@ export class ReportGenerator {
         ,
         (headerData as any)[key],
       ]);
-      // worksheet.mergeCells(`B${worksheet.rowCount}:D${worksheet.rowCount}`);
-      // worksheet.mergeCells(`E${worksheet.rowCount}:G${worksheet.rowCount}`);
+
       newRow.eachCell((cell) => (cell.font = { bold: true }));
       newRow.commit();
     });

@@ -17,7 +17,7 @@ const initialState: Reportable = {
     well: '',
     field: '',
     state: '',
-    location: '',
+    district: '',
     county: '',
   },
   logo: '',

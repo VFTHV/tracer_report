@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setHeader, StoreState } from '../store';
 import { Standards } from '../logics/Standards';
 
 import { HeaderInfo } from '../logics/HeaderProcessor';
 
-const DisplayHeader: React.FC = () => {
+const DisplayHeader: FC = () => {
   const dispatch = useDispatch();
   const { header, standard } = useSelector((state: StoreState) => state.tracer);
 
@@ -13,8 +13,6 @@ const DisplayHeader: React.FC = () => {
     const newHeader = { ...header, [field]: value };
     dispatch(setHeader(newHeader));
   };
-
-  // redo renderHeader using .map()
 
   const renderHeader = () => {
     return (
@@ -84,15 +82,15 @@ const DisplayHeader: React.FC = () => {
 
               <tr>
                 <th scope="row" className="text-nowrap py-0">
-                  Shop Location:
+                  District:
                 </th>
                 <td className="p-0">
                   <input
                     className="col p-0 border-0 text-center bg-transparent"
                     type="text"
-                    value={header.location}
+                    value={header.district}
                     onChange={(e) =>
-                      handleHeaderChange('location', e.target.value)
+                      handleHeaderChange('district', e.target.value)
                     }
                   />
                 </td>
@@ -100,15 +98,22 @@ const DisplayHeader: React.FC = () => {
 
               <tr>
                 <th scope="row" className="text-nowrap py-0">
-                  {standard === Standards.Texas ? 'County:' : 'Parish:'}
+                  {standard === Standards.Texas ? 'County' : 'Parish'}
                 </th>
                 <td className="p-0">
                   <input
                     className="col p-0 border-0 text-center bg-transparent"
                     type="text"
-                    value={header.county}
+                    value={
+                      standard === Standards.Texas
+                        ? header.county
+                        : header.parish
+                    }
                     onChange={(e) =>
-                      handleHeaderChange('county', e.target.value)
+                      handleHeaderChange(
+                        standard === Standards.Texas ? 'county' : 'parish',
+                        e.target.value
+                      )
                     }
                   />
                 </td>
