@@ -18,7 +18,7 @@ export class ReportGenerator {
       pageSetup: { fitToPage: true, fitToWidth: 1 },
     });
 
-    ReportGenerator.createHeader(worksheet, headerData, standard);
+    ReportGenerator.createHeader(worksheet, headerData);
     ReportGenerator.createTable(worksheet, passData, standard);
     if (logo) ReportGenerator.addLogo(worksheet, workbook, logo);
     ReportGenerator.toXlsx(worksheet, workbook, filename, headerData);
@@ -100,6 +100,9 @@ export class ReportGenerator {
     worksheet.mergeCells(`I${worksheet.rowCount}:I${worksheet.rowCount - 1}`);
     worksheet.mergeCells(`J${worksheet.rowCount}:J${worksheet.rowCount - 1}`);
     tblHead2.commit();
+
+    console.log(passData);
+
     passData.forEach((rowData, index) => {
       if (rowData.newSlug) {
         const ejectSlugRow = worksheet.addRow([
@@ -171,11 +174,7 @@ export class ReportGenerator {
     });
   }
 
-  static createHeader(
-    worksheet: Worksheet,
-    headerData: HeaderInfo,
-    standard: string
-  ): void {
+  static createHeader(worksheet: Worksheet, headerData: HeaderInfo): void {
     const columnWidths = [5, 8, 8, 8, 8, 8, 7, 9, 12, 16];
 
     columnWidths.forEach((colWidth, i) => {

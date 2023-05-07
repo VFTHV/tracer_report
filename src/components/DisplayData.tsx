@@ -26,11 +26,11 @@ const DisplayData = () => {
 
   const isVisible = enabled ? 'd-block' : 'd-none';
 
-  const [, handleSubmit] = useForm('mlekbvbd');
+  // const [, handleSubmit] = useForm('mlekbvbd');
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    handleSubmit(e);
+    // handleSubmit(e);
   };
 
   const headerAsText = Object.values(header).join('; ');

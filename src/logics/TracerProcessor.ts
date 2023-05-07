@@ -222,6 +222,7 @@ export class TracerProcessor extends DataProcessor {
           ...currentRemark,
           remark: `PASS # ${slugPassNo}`,
           slugPassNo,
+          newSlug,
         };
         remarks.push(currentRemark);
         // determining number of passes to find last pass as dissipating
