@@ -1,46 +1,59 @@
-# Getting Started with Create React App
+# Wireline Logging Radioactive Tracer Reporting tool and Time To Depth conversion tool
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is a 2-in-1 project: R/A trancer Reporting Tool that outputs report table in .xlsx format and Time-to-Depth tool that converts time driven noise log .las file to depth-driven .las file
 
-## Available Scripts
+## Table of Contents
 
-In the project directory, you can run:
+- [Overview](#overview)
+- [Features](#features)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Contributing](#contributing)
+- [License](#license)
 
-### `npm start`
+## Overview
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+This project aims to simplify the creation of R/A tracer reporting table and .las file data conversion. It is built using React, Redux and TypeScript, and it focuses on precise output of depth and time data
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Features
 
-### `npm test`
+### Radioactive Tracer
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- Ability to change Louisiana and Texas reporting standards
+- Ability to set total depth in order to determine the bottom logging interval
+- Ability to add company logo to the table
 
-### `npm run build`
+### Time-to-Depth Conversion Tool
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- Large multi-line time-driven .las file gets converted into much smaller depth driven .las file
+- Data during the tool movement (LSPD curve !== 0) is removed from data
+- 10% at the start and end of stationary data is removed
+- Remaining 80% (from 10% to 90%) of stationary data is averaged out for each curve
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Installation
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+1. Clone the repository: `git clone https://github.com/VFTHV/tracer_report.git`
+2. Navigate to the project directory: `cd tracer_report`
+3. Install dependencies: `npm install`
+4. Start the development server: `npm start`
 
-### `npm run eject`
+## Usage
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+To use this project, follow these steps:
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+1. Open your web browser and go to [localhost:5173](http://localhost:3000) (or the appropriate URL if configured differently).
+2. Current master branch is deployed at https://ra-tracer-report.netlify.app/
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## Contributing
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+Contributions are welcome! If you'd like to contribute to the project, please follow these steps:
 
-## Learn More
+1. Fork the repository.
+2. Create a new branch: `git checkout -b feature/your-feature-name`
+3. Make your changes and commit them: `git commit -m "Add your commit message"`
+4. Push to the branch: `git push origin feature/your-feature-name`
+5. Create a new pull request explaining your changes.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## License
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+This project is licensed under the [MIT License](LICENSE). You are free to modify and distribute this code as per the terms of the license.

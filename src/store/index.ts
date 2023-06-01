@@ -3,7 +3,7 @@ import { reportReducer, Reportable } from './slices/reportSlice';
 import { tracerReducer, TracerState } from './slices/tracerSlice';
 import { ttdReducer, TTDState } from './slices/ttdSlice';
 
-const store = configureStore({
+const store = configureStore<StoreState>({
   reducer: {
     tracer: tracerReducer,
     report: reportReducer,
