@@ -20,24 +20,23 @@ const DisplayData = () => {
     window.scrollTo(0, document.body.scrollHeight);
   }, [allPassData]);
 
-  const hasHeader = header.date;
   const hasData = allPassData.length;
-  const enabled = Boolean(hasData) && Boolean(hasHeader);
+  const enabled = Boolean(hasData);
 
   const isVisible = enabled ? 'd-block' : 'd-none';
 
-  // const [, handleSubmit] = useForm('mlekbvbd');
+  const [, handleSubmit] = useForm('mlekbvbd');
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // handleSubmit(e);
+    handleSubmit(e);
   };
 
   const headerAsText = Object.values(header).join('; ');
 
   return (
     <form onSubmit={onSubmit}>
-      {hasHeader ? <DisplayHeader /> : null}
+      <DisplayHeader />
       <textarea
         id="message"
         name="message"
