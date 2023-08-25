@@ -21,6 +21,8 @@ const DisplayData = () => {
   }, [allPassData]);
 
   const hasData = allPassData.length;
+  console.log(header);
+  const hasHeader = Object.values(header).find((item) => Boolean(item));
   const enabled = Boolean(hasData);
 
   const isVisible = enabled ? 'd-block' : 'd-none';
@@ -36,7 +38,7 @@ const DisplayData = () => {
 
   return (
     <form onSubmit={onSubmit}>
-      <DisplayHeader />
+      {hasHeader && <DisplayHeader />}
       <textarea
         id="message"
         name="message"
@@ -44,7 +46,6 @@ const DisplayData = () => {
         readOnly
         style={{ display: 'none' }}
       />
-
       <table className="table table-striped table-bordered">
         {hasData ? <TableHead /> : ''}
 
