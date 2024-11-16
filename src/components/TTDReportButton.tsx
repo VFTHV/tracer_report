@@ -22,15 +22,13 @@ function TTDReportButton() {
       depthConvertedHeader,
       fileName
     );
-    // handleSubmit(e);
+    handleSubmit(e);
   };
 
   const enabled =
     depthConvertedData && convertedColHeader && depthConvertedHeader;
 
-  const isVisible = enabled ? 'd-inline' : 'd-none';
-
-  const s = depthConvertedHeader;
+  const str = depthConvertedHeader;
 
   return (
     <div className={`col-12 col-sm-6 col-lg-3 my-2`}>
@@ -42,7 +40,7 @@ function TTDReportButton() {
         <textarea
           id="message"
           name="message"
-          value={s.substring(0, s.indexOf('STEP'))}
+          value={str.substring(0, str.indexOf('STEP'))}
           readOnly
           style={{ display: 'none' }}
         />

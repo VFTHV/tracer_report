@@ -21,17 +21,17 @@ const DisplayData = () => {
   }, [allPassData]);
 
   const hasData = allPassData.length;
-  console.log(header);
+
   const hasHeader = Object.values(header).find((item) => Boolean(item));
   const enabled = Boolean(hasData);
 
   const isVisible = enabled ? 'd-block' : 'd-none';
 
-  // const [, handleSubmit] = useForm('mlekbvbd');
+  const [, handleSubmit] = useForm('mlekbvbd');
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // handleSubmit(e);
+    handleSubmit(e);
   };
 
   const headerAsText = Object.values(header).join('; ');

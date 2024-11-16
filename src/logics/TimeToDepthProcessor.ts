@@ -44,12 +44,13 @@ export class TimeToDepthProcessor {
       .filter((row: number[]): boolean => {
         return row[lspdIndex] === 0;
       });
+    console.log({ inputData: numbersData });
 
     // make average values on same depth
     let sameDepth: number[][] = [];
     let averages: number[][] = [];
     let skipped: number = 0;
-    console.log({ numbersData });
+
     numbersData.forEach((row: number[], index: number): void => {
       if (
         (sameDepth.length === 0 ||
@@ -74,10 +75,7 @@ export class TimeToDepthProcessor {
         });
         if (sameDepth.length > (minSamples || 0)) {
           averages.push(averAtSameDepth);
-          // make this 50 number dynamic --> samples per station so user can choose
-          // count successfull stations
         } else {
-          // count too short stations
           skipped++;
         }
 
@@ -85,7 +83,8 @@ export class TimeToDepthProcessor {
         sameDepth.push(row);
       }
     });
-    console.log({ averages });
+    console.log({ outputData: averages });
+
     averages = averages.sort((rowA, rowB) => rowA[0] - rowB[0]);
     return { averages, skipped };
   }
