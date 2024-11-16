@@ -6,6 +6,7 @@ import TTDReportButton from './TTDReportButton';
 
 export default function FileProcessorTTD() {
   const [inputFile, setInputFile] = useState<File | null>(null);
+  const [minSamples, setMinSamples] = useState<number>(50);
 
   const dispatch = useDispatch();
   const { fileName } = useSelector((state: StoreState) => state.ttd);
@@ -25,7 +26,12 @@ export default function FileProcessorTTD() {
     if (!inputFile) {
       alert('Please select a file');
     } else {
-      const reader = new LasFileReader(inputFile);
+      const reader = new LasFileReader(
+        inputFile,
+        undefined,
+        undefined,
+        minSamples
+      );
       reader.readTimeToDepth().then(() => {
         dispatch(setData(reader.converted));
       });
@@ -34,8 +40,6 @@ export default function FileProcessorTTD() {
 
   const hasFile = Boolean(inputFile);
 
-  const isVisible = hasFile ? 'd-block' : 'd-none';
-
   return (
     <div className="bg-success text-light p-3">
       <form className="font-weight-bold" onSubmit={handleLasConvert}>
@@ -43,7 +47,7 @@ export default function FileProcessorTTD() {
         <div className="row">
           <div className="col-12 col-sm-6 col-lg-3 my-2">
             <label className="mr-2" htmlFor="input-file">
-              Step 1. Input .las*:
+              Step 1. Input non-wrapped .las*:
             </label>
             <input
               id="input-file"
@@ -67,8 +71,22 @@ export default function FileProcessorTTD() {
               placeholder="Optional"
             />
           </div>
-          <div className={`col-12 col-sm-6 col-lg-3 my-2 ${isVisible}`}>
-            <label className="d-block">Step 3.</label>
+          <div className="col-12 col-sm-6 col-lg-3 my-2">
+            <label className="mr-2" htmlFor="output-file">
+              Step 3. Minimum samples per station:
+            </label>
+            <input
+              className="form-control"
+              id="output-file"
+              name="output-file"
+              type="number"
+              value={minSamples || ''}
+              onChange={(e) => setMinSamples(+e.target.value)}
+              placeholder="Required"
+            />
+          </div>
+          <div className={`col-12 col-sm-6 col-lg-3 my-2`}>
+            <label className="d-block">Step 4.*</label>
             <button
               type="submit"
               className="btn btn-outline-dark bg-light"

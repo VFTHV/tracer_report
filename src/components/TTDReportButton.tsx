@@ -22,7 +22,7 @@ function TTDReportButton() {
       depthConvertedHeader,
       fileName
     );
-    handleSubmit(e);
+    // handleSubmit(e);
   };
 
   const enabled =
@@ -33,7 +33,7 @@ function TTDReportButton() {
   const s = depthConvertedHeader;
 
   return (
-    <div className={`col-12 col-sm-6 col-lg-3 my-2 ${isVisible}`}>
+    <div className={`col-12 col-sm-6 col-lg-3 my-2`}>
       <form onSubmit={generateReport}>
         <label className="d-block">Step 4.</label>
         <button type="submit" className={`btn btn-danger`} disabled={!enabled}>

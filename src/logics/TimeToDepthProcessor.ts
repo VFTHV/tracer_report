@@ -12,12 +12,13 @@ export class TimeToDepthProcessor {
 
     return columnHeader;
   }
-  static timeToDepthData(data: string[][]): number[][] {
+  static timeToDepthData(
+    data: string[][],
+    minSamples?: number
+  ): { averages: number[][]; skipped: number } {
     const columnHeader = data.filter((row) => row.includes('~A')).flat();
     const depthIndex = columnHeader.findIndex((h) => h === 'ADPTH') - 1;
     const lspdIndex = columnHeader.findIndex((h) => h === 'LSPD') - 1;
-
-    // curveHeader
 
     // extracting las data
     const columnHeaderIndex = data.findIndex((line) => line.includes('~A'));
@@ -26,13 +27,14 @@ export class TimeToDepthProcessor {
       .filter((_, i) => i > columnHeaderIndex)
       .map((row) => row.map((item) => parseFloat(item.toString())));
 
-    // trim data from non-zero speed, leaving only stations
-
     if (depthIndex < 0) {
-      alert('Please make sure LAS file has ADPTH curve');
+      alert('ADPTH curve not found');
     }
 
     columnHeader[1] = 'Depth';
+
+    // trim data from non-zero speed, leaving only stations
+    // make this optional
 
     numbersData = numbersData
       .map((row: number[]): number[] => {
@@ -46,7 +48,8 @@ export class TimeToDepthProcessor {
     // make average values on same depth
     let sameDepth: number[][] = [];
     let averages: number[][] = [];
-
+    let skipped: number = 0;
+    console.log({ numbersData });
     numbersData.forEach((row: number[], index: number): void => {
       if (
         (sameDepth.length === 0 ||
@@ -69,16 +72,22 @@ export class TimeToDepthProcessor {
             cutEdgesSameDepth.length;
           return Number(avNum.toFixed(4));
         });
-        if (sameDepth.length > 50) {
+        if (sameDepth.length > (minSamples || 0)) {
           averages.push(averAtSameDepth);
+          // make this 50 number dynamic --> samples per station so user can choose
+          // count successfull stations
+        } else {
+          // count too short stations
+          skipped++;
         }
 
         sameDepth = [];
         sameDepth.push(row);
       }
     });
+    console.log({ averages });
     averages = averages.sort((rowA, rowB) => rowA[0] - rowB[0]);
-    return averages;
+    return { averages, skipped };
   }
 
   static timeToDepthHeader(

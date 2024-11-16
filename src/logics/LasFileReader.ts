@@ -20,7 +20,8 @@ export class LasFileReader {
   constructor(
     public file: File,
     public totalDepth?: number,
-    public standard?: string
+    public standard?: string,
+    public minSamples?: number
   ) {}
 
   async readTracer(): Promise<void> {
@@ -59,8 +60,11 @@ export class LasFileReader {
       fileReader.onloadend = () => {
         if (fileReader.result !== null) {
           const singlePassData = LasParser.parseOnePass(fileReader.result);
-          const convertedData =
-            TimeToDepthProcessor.timeToDepthData(singlePassData);
+
+          const { averages, skipped } = TimeToDepthProcessor.timeToDepthData(
+            singlePassData,
+            this.minSamples
+          );
 
           const convertedColHeader =
             TimeToDepthProcessor.convertColHeader(singlePassData);
@@ -68,16 +72,26 @@ export class LasFileReader {
           const initalData = fileReader.result.toString();
           const convertedHeader = TimeToDepthProcessor.timeToDepthHeader(
             initalData,
-            convertedData
+            averages
           );
           this.converted = {
-            data: convertedData,
+            data: averages,
             colHeader: convertedColHeader,
             header: convertedHeader,
           };
-
+          alert(
+            `Processed ${
+              averages.length
+            } stations. ${skipped} stations were skipped ${
+              !!skipped
+                ? `because they contained less than specified ${this.minSamples} Minimum Samples per Station`
+                : ''
+            } 
+            `
+          );
           resolve();
         } else {
+          alert('File could not be read');
           reject(new Error('File could not be read'));
         }
       };
